@@ -358,36 +358,39 @@
         .breaking-news {
             background: linear-gradient(90deg, #dc2626, #b91c1c);
             color: white;
-            padding: 14px 0;
+            padding: 0; /* İç elemanlara padding taşındı */
             margin-bottom: 30px;
             position: relative;
             overflow: hidden;
             border-radius: 12px;
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            display: flex; /* Flexbox kullanıldı */
+            align-items: center;
         }
         
-        .breaking-news::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 140px;
+        /* .breaking-news::before kaldırıldı */
+
+        .breaking-news-label-container {
+            flex-shrink: 0; /* Etiketin küçülmesini engelle */
             background: rgba(0, 0, 0, 0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 14px 16px; /* Dikey ve yatay padding eklendi */
             font-weight: 800;
             font-size: 1.1rem;
             letter-spacing: 1px;
             text-transform: uppercase;
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        
+
         .breaking-content {
-            padding-left: 150px;
+            padding: 0 10px; /* Yatay padding eklendi */
             white-space: nowrap;
             overflow: hidden;
             animation: marquee 25s linear infinite;
+            flex-grow: 1; /* Kalan alanı doldur */
         }
         
         @keyframes marquee {
@@ -557,48 +560,6 @@
             .carousel-item video {
                 height: 300px;
             }
-
-            /* Header responsive adjustments */
-            .header-gradient .container {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-
-            .header-gradient .container > div {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .header-gradient .container .flex-col.sm:flex-row {
-                flex-direction: column;
-            }
-
-            .header-gradient .container .flex-col.sm:flex-row .flex-col.sm:flex-row {
-                flex-direction: column;
-                align-items: center;
-                margin-top: 1rem;
-            }
-
-            .header-gradient .container .flex-col.sm:flex-row .flex-col.sm:flex-row span {
-                margin-top: 0.5rem;
-                margin-left: 0 !important; /* Override sm:ml-10 */
-            }
-
-            nav.flex {
-                width: 100%;
-                justify-content: center;
-                margin-top: 1.5rem;
-                flex-wrap: wrap; /* Allow buttons to wrap */
-                gap: 0.75rem; /* Space between wrapped buttons */
-            }
-
-            .lang-button {
-                flex-grow: 1; /* Allow buttons to grow and fill space */
-                max-width: 100px; /* Limit max width for better appearance */
-                font-size: 0.85rem; /* Slightly smaller font for mobile */
-                padding: 0.5rem 1rem; /* Adjust padding */
-            }
         }
     </style>
 </head>
@@ -620,7 +581,7 @@
                     <span id="currency-info" class="flex items-center bg-white/10 py-1 px-3 rounded-full backdrop-blur-sm"><i class="fas fa-coins mr-2"></i></span>
                 </div>
             </div>
-            <nav class="flex space-x-3 mt-4 sm:mt-0">
+            <nav class="flex flex-wrap justify-center space-x-3 mt-4 sm:mt-0"> <!-- flex-wrap ve justify-center eklendi -->
                 <button id="lang-tr" class="lang-button">TR</button>
                 <button id="lang-en" class="lang-button">EN</button>
                 <button id="lang-ru" class="lang-button">RU</button>
@@ -631,8 +592,10 @@
     <main class="container mx-auto p-6 flex-grow">
         <!-- Breaking news bar -->
         <div class="breaking-news">
+            <div class="breaking-news-label-container"> <!-- Etiket için yeni kapsayıcı -->
+                <span id="breaking-news-label"><i class="fas fa-bolt mr-2"></i></span>
+            </div>
             <div id="breaking-content" class="breaking-content">
-                <span class="font-bold mr-4" id="breaking-news-label"><i class="fas fa-bolt mr-2"></i></span>
                 <span id="breaking-news-text">Yükleniyor...</span>
             </div>
         </div>
