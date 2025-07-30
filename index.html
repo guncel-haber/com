@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Güncel Haberler</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .news-card {
+            background-color: #ffffff;
+            border-radius: 0.75rem; /* rounded-lg */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+            transition: transform 0.2s ease-in-out;
+            cursor: pointer; /* Tıklanabilir olduğunu belirtir */
+        }
+        .news-card:hover {
+            transform: translateY(-5px);
+        }
+        .lang-button {
+            padding: 0.25rem 0.5rem; /* px-2 py-1 */
+            font-size: 0.875rem; /* text-sm */
+            border-radius: 0.375rem; /* rounded-md */
+            font-weight: 600; /* font-semibold */
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .lang-button.active {
+            background-color: white;
+            color: #2563eb; /* blue-600 */
+        }
+        /* Modal Stilleri */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            width: 90%;
+            max-width: 800px; /* Modal genişliğini artırdık */
+            max-height: 90vh; /* Ekran yüksekliğinin %90'ı */
+            overflow-y: auto; /* İçerik taşarsa kaydırma çubuğu */
+        }
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Carousel Stilleri */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .carousel-item {
+            min-width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #e2e8f0; /* gray-200 */
+        }
+        .carousel-item img,
+        .carousel-item video {
+            width: 100%;
+            height: 400px; /* Carousel yüksekliğini sabit tut */
+            object-fit: contain; /* Medyanın tamamının görünmesini sağlar */
+            border-radius: 0.5rem;
+        }
+        .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-size: 1.5rem;
+            border-radius: 0.375rem;
+            z-index: 10;
+        }
+        .carousel-button.prev {
+            left: 0.5rem;
+        }
+        .carousel-button.next {
+            right: 0.5rem;
+        }
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 0.5rem;
+        }
+        .dot {
+            height: 10px;
+            width: 10px;
+            margin: 0 5px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+            cursor: pointer;
+        }
+        .dot.active {
+            background-color: #717171;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <header class="bg-blue-600 text-white p-4 shadow-md">
+        <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center">
+            <div class="flex flex-col sm:flex-row items-center w-full sm:w-auto mb-2 sm:mb-0">
+                <h1 id="main-title" class="text-3xl font-bold mb-2 sm:mb-0 sm:mr-4">Güncel Haberler</h1>
+                <div class="text-sm flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-4">
+                    <span id="current-date-time"></span>
+                    <span id="weather-info"></span>
+                    <span id="currency-info"></span>
+                </div>
+            </div>
+            <nav class="flex space-x-2">
+                <button id="lang-tr" class="lang-button">TR</button>
+                <button id="lang-en" class="lang-button">EN</button>
+                <button id="lang-ru" class="lang-button">RU</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 flex-grow">
+        <section id="news-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Haberler buraya yüklenecek -->
+            <div id="loading-indicator" class="col-span-full text-center text-gray-600 text-lg py-8">Haberler yükleniyor...</div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white p-4 text-center mt-auto">
+        <p id="footer-text">&copy; 2025 Haber Sitesi. Tüm Hakları Saklıdır.</p>
+    </footer>
+
+    <!-- Haber Detay Modalı -->
+    <div id="news-detail-modal" class="modal">
+        <div class="modal-content">
+            <button id="close-modal-button" class="close-button">&times;</button>
+            <div id="modal-content-inner">
+                <!-- Haber detayı buraya yüklenecek -->
+                <div id="modal-loading" class="text-center text-gray-600 text-lg py-8">Haber yükleniyor...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK'ları -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, query, onSnapshot, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Firebase configuration
+        let firebaseConfig;
+        let initialAuthToken;
+        if (typeof __firebase_config !== 'undefined' && typeof __initial_auth_token !== 'undefined') {
+            firebaseConfig = JSON.parse(__firebase_config);
+            initialAuthToken = __initial_auth_token;
+        } else {
+            // Provide your own fallback config for local testing
+            firebaseConfig = {
+                apiKey: "AIzaSyAzBBgPme5oA1xWBp3o8c0kk_65TcWBDEk",
+                authDomain: "turkmenistan-consulate.firebaseapp.com",
+                projectId: "turkmenistan-consulate",
+                storageBucket: "turkmenistan-consulate.appspot.com",
+                messagingSenderId: "257518915632",
+                appId: "1:257518915632:web:0a069b8a563428336e9df5",
+                measurementId: "G-4VEHZYBFF2"
+            };
+            initialAuthToken = null;
+        }
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+        // Initialize Firebase app
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        let currentLanguage = 'tr'; // Default language
+        let userId = null; // User ID
+
+        const newsListDiv = document.getElementById('news-list');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const mainTitle = document.getElementById('main-title');
+        const footerText = document.getElementById('footer-text');
+        const currentDateTimeSpan = document.getElementById('current-date-time');
+        const weatherInfoSpan = document.getElementById('weather-info');
+        const currencyInfoSpan = document.getElementById('currency-info');
+
+        // Modal elements
+        const newsDetailModal = document.getElementById('news-detail-modal');
+        const modalContentInnerDiv = document.getElementById('modal-content-inner');
+        const closeModalButton = document.getElementById('close-modal-button');
+        const modalLoadingIndicator = document.getElementById('modal-loading');
+
+        // Translations
+        const translations = {
+            tr: {
+                mainTitle: "Güncel Haberler",
+                loadingNews: "Haberler yükleniyor...",
+                noNews: "Bu dilde henüz haber bulunmamaktadır.",
+                errorLoadingNews: "Haberler yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+                footer: "&copy; 2025 Haber Sitesi. Tüm Hakları Saklıdır.",
+                authError: "Oturum açılırken bir hata oluştu.",
+                datePrefix: "Tarih:",
+                timePrefix: "Saat:",
+                weatherPrefix: "Hava:",
+                weatherApiKeyMissing: "API Anahtarı Eksik",
+                weatherInfoNotAvailable: "Bilgi Yok",
+                weatherUnauthorized: "API Anahtarı geçersiz veya etkin değil. Yeni anahtarların tamamen etkinleşmesi 2 saate kadar sürebilir.",
+                currencyPrefix: "Kurlar:",
+                downloadFile: "Dosyayı İndir",
+                publishedDate: "Yayınlanma Tarihi:",
+                language: "Dil:"
+            },
+            en: {
+                mainTitle: "Latest News",
+                loadingNews: "Loading news...",
+                noNews: "No news available in this language yet.",
+                errorLoadingNews: "An error occurred while loading news. Please try again later.",
+                footer: "&copy; 2025 News Website. All Rights Reserved.",
+                authError: "An error occurred during sign-in.",
+                datePrefix: "Date:",
+                timePrefix: "Time:",
+                weatherPrefix: "Weather:",
+                weatherApiKeyMissing: "API Key Missing",
+                weatherInfoNotAvailable: "N/A",
+                weatherUnauthorized: "API Key invalid or inactive. New keys can take up to 2 hours to fully activate.",
+                currencyPrefix: "Rates:",
+                downloadFile: "Download File",
+                publishedDate: "Published Date:",
+                language: "Language:"
+            },
+            ru: {
+                mainTitle: "Последние новости",
+                loadingNews: "Загрузка новостей...",
+                noNews: "Новостей на этом языке пока нет.",
+                errorLoadingNews: "Произошла ошибка при загрузке новостей. Пожалуйста, попробуйте позже.",
+                footer: "&copy; 2025 Новостной сайт. Все права защищены.",
+                authError: "Произошла ошибка при входе.",
+                datePrefix: "Дата:",
+                timePrefix: "Время:",
+                weatherPrefix: "Погода:",
+                weatherApiKeyMissing: "Отсутствует ключ API",
+                weatherInfoNotAvailable: "Н/Д",
+                weatherUnauthorized: "Ключ API недействителен или неактивен. Полная активация новых ключей может занять до 2 часов.",
+                currencyPrefix: "Курсы:",
+                downloadFile: "Скачать файл",
+                publishedDate: "Дата публикации:",
+                language: "Язык:"
+            }
+        };
+
+        // Update UI texts
+        function updateUI() {
+            mainTitle.textContent = translations[currentLanguage].mainTitle;
+            footerText.innerHTML = translations[currentLanguage].footer;
+            loadingIndicator.textContent = translations[currentLanguage].loadingNews;
+        }
+
+        // Language change function
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            updateUI(); // Update UI texts based on new language
+            fetchNews(); // Reload news based on new language
+            updateActiveButton(lang); // Update active button
+            fetchExternalData(); // Update weather and currency rates based on new language
+        }
+
+        // Highlight active language button
+        function updateActiveButton(activeLang) {
+            document.querySelectorAll('nav button').forEach(button => {
+                if (button.id === `lang-${activeLang}`) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+        }
+
+        // Fetch and display news from Firestore
+        function fetchNews() {
+            if (!userId) {
+                console.log("Haber sitesi: Kullanıcı kimliği bekleniyor...");
+                return;
+            }
+
+            // Clear previous news
+            newsListDiv.innerHTML = '';
+            newsListDiv.appendChild(loadingIndicator); // Re-add loading indicator
+
+            const newsQuery = collection(db, `artifacts/${appId}/public/data/news`);
+
+            console.log("Haber sitesi: Haberler için anlık görüntü dinleyicisi başlatılıyor...");
+            // IMPORTANT: Ensure your Firebase Firestore security rules allow read access to the following collection:
+            // Go to your Firebase Console -> Firestore Database -> Rules tab and add the following rules:
+            // rules_version = '2';
+            // service cloud.firestore {
+            //   match /databases/{database}/documents {
+            //     match /artifacts/{appId}/public/data/news/{documentId} {
+            //       allow read: if true; // Everyone can read
+            //       allow write: if request.auth != null; // Only authenticated users can write (for admin panel)
+            //     }
+            //   }
+            // }
+            onSnapshot(newsQuery, (snapshot) => {
+                const news = [];
+                snapshot.forEach((doc) => {
+                    news.push({ id: doc.id, ...doc.data() });
+                });
+
+                console.log("Haber sitesi: Firestore'dan çekilen tüm haberler:", news.map(item => ({ title: item.title, language: item.language, id: item.id })));
+
+                // Sort news by timestamp (latest first)
+                news.sort((a, b) => (b.timestamp?.toDate() || 0) - (a.timestamp?.toDate() || 0));
+
+                // Remove loading indicator
+                loadingIndicator.remove();
+
+                // Filter news by current language
+                const filteredNews = news.filter(item => item.language === currentLanguage);
+
+                console.log("Haber sitesi: Mevcut dil (" + currentLanguage + ") için filtrelenmiş haberler:", filteredNews.map(item => ({ title: item.title, language: item.language })));
+
+                if (filteredNews.length === 0) {
+                    newsListDiv.innerHTML = `<div class="col-span-full text-center text-gray-600 text-lg py-8">${translations[currentLanguage].noNews}</div>`;
+                    return;
+                }
+
+                newsListDiv.innerHTML = ''; // Clear previous news
+
+                filteredNews.forEach(newsItem => {
+                    const newsCardDiv = document.createElement('div');
+                    newsCardDiv.className = 'news-card p-6 flex flex-col justify-between h-full';
+                    newsCardDiv.dataset.id = newsItem.id; // Save news ID to data-id attribute
+
+                    // Display only the first media item on the card
+                    let firstMediaHtml = '';
+                    if (newsItem.mediaUrls && newsItem.mediaUrls.length > 0) {
+                        const firstUrl = newsItem.mediaUrls[0];
+                        const fileExtension = firstUrl.split('.').pop().toLowerCase();
+                        if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+                            firstMediaHtml = `<img src="${firstUrl}" alt="${newsItem.title}" class="w-full h-48 object-cover rounded-md mb-4">`;
+                        } else if (['mp4', 'webm', 'ogg'].includes(fileExtension)) {
+                            firstMediaHtml = `<video controls src="${firstUrl}" class="w-full h-48 object-cover rounded-md mb-4"></video>`;
+                        } else {
+                            firstMediaHtml = `<a href="${firstUrl}" target="_blank" class="text-blue-500 hover:underline mb-4 block">${translations[currentLanguage].downloadFile || 'Dosyayı İndir'}</a>`;
+                        }
+                    }
+
+                    newsCardDiv.innerHTML = `
+                        <div>
+                            ${firstMediaHtml}
+                            <h2 class="text-xl font-bold text-gray-900 mb-2">${newsItem.title}</h2>
+                        </div>
+                        <div class="text-sm text-gray-500 mt-4">
+                            ${newsItem.timestamp ? new Date(newsItem.timestamp.toDate()).toLocaleString() : translations[currentLanguage].noDate || 'Tarih Yok'}
+                        </div>
+                    `;
+                    newsListDiv.appendChild(newsCardDiv);
+
+                    // Add click event listener to news card
+                    newsCardDiv.addEventListener('click', () => showNewsDetailModal(newsItem.id));
+                });
+            }, (error) => {
+                console.error("Haber sitesi: Haberler çekilirken hata oluştu:", error);
+                newsListDiv.innerHTML = `<div class="col-span-full text-center text-red-500 text-lg py-8">${translations[currentLanguage].errorLoadingNews}</div>`;
+            });
+        }
+
+        // Update current date and time
+        function updateDateTime() {
+            const now = new Date();
+            const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            currentDateTimeSpan.textContent = `${translations[currentLanguage].datePrefix} ${now.toLocaleDateString(currentLanguage, dateOptions)} ${translations[currentLanguage].timePrefix} ${now.toLocaleTimeString(currentLanguage, timeOptions)}`;
+        }
+
+        // Fetch weather and currency rates (Weather from API, currency from API)
+        async function fetchExternalData() {
+            // Weather (requires OpenWeatherMap API key)
+            // NOTE: It may take up to 2 hours for newly created API keys to fully activate.
+            // During this time, it is normal to receive an "Unauthorized" error. Please wait and try again.
+            const weatherApiKey = '0a4aabd9dbf04547a786c4a6d8fcf155'; 
+            const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=Istanbul&appid=${weatherApiKey}&units=metric&lang=${currentLanguage}`;
+
+            if (!weatherApiKey || weatherApiKey === 'YOUR_OPENWEATHERMAP_API_KEY') {
+                weatherInfoSpan.textContent = `${translations[currentLanguage].weatherPrefix} ${translations[currentLanguage].weatherApiKeyMissing}`;
+                console.warn("Hava durumu API anahtarı eksik veya geçersiz. Lütfen 'YOUR_OPENWEATHERMAP_API_KEY' placeholder'ını kendi anahtarınızla değiştirin.");
+            } else {
+                try {
+                    const response = await fetch(weatherUrl);
+                    if (response.ok) {
+                        const data = await response.json();
+                        weatherInfoSpan.textContent = `${translations[currentLanguage].weatherPrefix} ${data.main.temp}°C, ${data.weather[0].description}`;
+                    } else {
+                        // For more detailed error message
+                        const errorText = await response.text(); // Get error response as text
+                        weatherInfoSpan.textContent = `${translations[currentLanguage].weatherPrefix} ${translations[currentLanguage].weatherUnauthorized}`;
+                        console.error(`Hava durumu çekilirken yetkilendirme hatası (${response.status} ${response.statusText}): API anahtarı geçersiz veya etkin değil. Yeni anahtarların etkinleşmesi zaman alabilir. Detay: ${errorText}`);
+                    }
+                } catch (error) {
+                    weatherInfoSpan.textContent = `${translations[currentLanguage].weatherPrefix} ${translations[currentLanguage].weatherInfoNotAvailable}`;
+                    console.error("Hava durumu çekilirken ağ hatası:", error);
+                }
+            }
+
+            // Currency Rates (Example - You may need to use a different API)
+            const currencyUrl = `https://api.exchangerate-api.com/v4/latest/USD`; // Example API, you may need to register for actual use
+
+            try {
+                const response = await fetch(currencyUrl);
+                if (response.ok) {
+                    const data = await response.json();
+                    const usdToTry = data.rates.TRY ? data.rates.TRY.toFixed(2) : 'N/A';
+                    const eurToTry = data.rates.EUR ? (data.rates.TRY / data.rates.EUR).toFixed(2) : 'N/A'; // Conversion from EUR/USD to TRY
+                    currencyInfoSpan.textContent = `${translations[currentLanguage].currencyPrefix} USD: ${usdToTry}₺, EUR: ${eurToTry}₺`;
+                } else {
+                    currencyInfoSpan.textContent = `${translations[currentLanguage].currencyPrefix} N/A`;
+                    console.error("Döviz kurları çekilirken hata oluştu:", response.statusText);
+                }
+            } catch (error) {
+                currencyInfoSpan.textContent = `${translations[currentLanguage].currencyPrefix} N/A`;
+                console.error("Döviz kurları çekilirken ağ hatası:", error);
+            }
+        }
+
+        // Function: Show news detail in modal with carousel
+        async function showNewsDetailModal(newsId) {
+            newsDetailModal.style.display = 'flex'; // Show modal
+            modalContentInnerDiv.innerHTML = ''; // Clear previous content
+            modalContentInnerDiv.appendChild(modalLoadingIndicator); // Add loading indicator
+            modalLoadingIndicator.style.display = 'block'; // Make loading indicator visible
+
+            try {
+                const newsDocRef = doc(db, `artifacts/${appId}/public/data/news`, newsId);
+                const newsDocSnap = await getDoc(newsDocRef);
+
+                modalLoadingIndicator.style.display = 'none'; // Hide loading indicator
+
+                if (newsDocSnap.exists()) {
+                    const newsItem = newsDocSnap.data();
+
+                    let mediaCarouselHtml = '';
+                    if (newsItem.mediaUrls && newsItem.mediaUrls.length > 0) {
+                        mediaCarouselHtml = `
+                            <div class="carousel-container">
+                                <div class="carousel-inner" id="carousel-inner">
+                                    ${newsItem.mediaUrls.map(url => {
+                                        const fileExtension = url.split('.').pop().toLowerCase();
+                                        if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+                                            return `<div class="carousel-item"><img src="${url}" alt="Medya"></div>`;
+                                        } else if (['mp4', 'webm', 'ogg'].includes(fileExtension)) {
+                                            return `<div class="carousel-item"><video controls src="${url}"></video></div>`;
+                                        } else {
+                                            return `<div class="carousel-item"><a href="${url}" target="_blank" class="text-blue-500 hover:underline">${translations[currentLanguage].downloadFile || 'Dosyayı İndir'}</a></div>`;
+                                        }
+                                    }).join('')}
+                                </div>
+                                <button class="carousel-button prev" id="carousel-prev">&#10094;</button>
+                                <button class="carousel-button next" id="carousel-next">&#10095;</button>
+                                <div class="carousel-dots" id="carousel-dots">
+                                    ${newsItem.mediaUrls.map((_, index) => `<span class="dot" data-index="${index}"></span>`).join('')}
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    modalContentInnerDiv.innerHTML = `
+                        <h2 class="text-3xl font-bold text-gray-900 mb-4">${newsItem.title}</h2>
+                        ${mediaCarouselHtml}
+                        <p class="text-gray-700 text-lg leading-relaxed mb-6">${newsItem.content}</p>
+                        <div class="text-sm text-gray-500">
+                            ${translations[currentLanguage].publishedDate} ${newsItem.timestamp ? new Date(newsItem.timestamp.toDate()).toLocaleString() : 'Tarih Yok'}
+                            <span class="ml-4">${translations[currentLanguage].language} ${newsItem.language.toUpperCase()}</span>
+                        </div>
+                    `;
+
+                    // Initialize carousel if media exists
+                    if (newsItem.mediaUrls && newsItem.mediaUrls.length > 0) {
+                        initCarousel(newsItem.mediaUrls.length);
+                    }
+
+                } else {
+                    modalContentInnerDiv.innerHTML = `<div class="text-center text-red-500 text-lg py-8">Haber bulunamadı.</div>`;
+                }
+            } catch (error) {
+                console.error("Haber detayı çekilirken hata oluştu:", error);
+                modalContentInnerDiv.innerHTML = `<div class="text-center text-red-500 text-lg py-8">Haber detayı yüklenirken bir hata oluştu.</div>`;
+            }
+        }
+
+        // Carousel logic
+        let currentSlide = 0;
+        let totalSlides = 0;
+
+        function initCarousel(numSlides) {
+            totalSlides = numSlides;
+            currentSlide = 0;
+            updateCarousel();
+
+            document.getElementById('carousel-prev').addEventListener('click', () => {
+                currentSlide = (currentSlide === 0) ? totalSlides - 1 : currentSlide - 1;
+                updateCarousel();
+            });
+
+            document.getElementById('carousel-next').addEventListener('click', () => {
+                currentSlide = (currentSlide === totalSlides - 1) ? 0 : currentSlide + 1;
+                updateCarousel();
+            });
+
+            document.querySelectorAll('.dot').forEach(dot => {
+                dot.addEventListener('click', (e) => {
+                    currentSlide = parseInt(e.target.dataset.index);
+                    updateCarousel();
+                });
+            });
+        }
+
+        function updateCarousel() {
+            const carouselInner = document.getElementById('carousel-inner');
+            if (carouselInner) {
+                carouselInner.style.transform = `translateX(-${currentSlide * 100}%)`;
+            }
+            document.querySelectorAll('.dot').forEach((dot, index) => {
+                if (index === currentSlide) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        // Function: Close modal
+        function closeNewsDetailModal() {
+            newsDetailModal.style.display = 'none'; // Hide modal
+            modalContentInnerDiv.innerHTML = ''; // Clear content
+        }
+
+        // Add event listener to modal close button
+        closeModalButton.addEventListener('click', closeNewsDetailModal);
+
+        // Close modal when clicking outside the modal content
+        newsDetailModal.addEventListener('click', (e) => {
+            if (e.target === newsDetailModal) {
+                closeNewsDetailModal();
+            }
+        });
+
+        // When authentication status changes
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                userId = user.uid;
+                console.log("Haber sitesi: Kullanıcı kimliği:", userId);
+                fetchNews(); // Fetch news when user ID is obtained
+            } else {
+                // If no user, sign in anonymously
+                try {
+                    if (initialAuthToken) {
+                        await signInWithCustomToken(auth, initialAuthToken);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                } catch (error) {
+                    console.error("Haber sitesi: Anonim oturum açma hatası:", error);
+                    newsListDiv.innerHTML = `<div class="col-span-full text-center text-red-500 text-lg py-8">${translations[currentLanguage].authError}</div>`;
+                }
+            }
+        });
+
+        // Add event listeners to language buttons
+        document.getElementById('lang-tr').addEventListener('click', () => setLanguage('tr'));
+        document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
+        document.getElementById('lang-ru').addEventListener('click', () => setLanguage('ru'));
+
+        // Set default language and fetch data when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            updateActiveButton(currentLanguage);
+            updateUI();
+            updateDateTime();
+            setInterval(updateDateTime, 1000); // Update date and time every second
+            fetchExternalData();
+            setInterval(fetchExternalData, 300000); // Update currency rates every 5 minutes
+        });
+    </script>
+</body>
+</html>
