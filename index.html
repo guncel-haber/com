@@ -122,8 +122,8 @@
         }
         
         .lang-button {
-            padding: 0.8rem 1.4rem; /* Daha büyük dokunma alanı için padding artırıldı */
-            font-size: 1rem; /* Yazı boyutu artırıldı */
+            padding: 0.6rem 1.2rem;
+            font-size: 0.95rem;
             border-radius: 50px;
             font-weight: 600;
             background-color: rgba(255, 255, 255, 0.15);
@@ -358,39 +358,36 @@
         .breaking-news {
             background: linear-gradient(90deg, #dc2626, #b91c1c);
             color: white;
-            padding: 0; /* İç elemanlara padding taşındı */
+            padding: 14px 0;
             margin-bottom: 30px;
             position: relative;
             overflow: hidden;
             border-radius: 12px;
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-            display: flex; /* Flexbox kullanıldı */
-            align-items: center;
         }
         
-        /* .breaking-news::before kaldırıldı */
-
-        .breaking-news-label-container {
-            flex-shrink: 0; /* Etiketin küçülmesini engelle */
+        .breaking-news::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 140px;
             background: rgba(0, 0, 0, 0.15);
-            padding: 14px 16px; /* Dikey ve yatay padding eklendi */
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-weight: 800;
             font-size: 1.1rem;
             letter-spacing: 1px;
             text-transform: uppercase;
-            border-top-left-radius: 12px;
-            border-bottom-left-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
-
+        
         .breaking-content {
-            padding: 0 10px; /* Yatay padding eklendi */
+            padding-left: 150px;
             white-space: nowrap;
             overflow: hidden;
             animation: marquee 25s linear infinite;
-            flex-grow: 1; /* Kalan alanı doldur */
         }
         
         @keyframes marquee {
@@ -561,42 +558,47 @@
                 height: 300px;
             }
 
-            /* Mobil görünümde başlık ve dil düğmeleri için düzenleme */
-            header .container {
+            /* Header responsive adjustments */
+            .header-gradient .container {
                 flex-direction: column;
                 align-items: center;
-                padding-left: 1rem; /* Daha fazla padding */
-                padding-right: 1rem; /* Daha fazla padding */
-            }
-
-            header .flex-col.sm\:flex-row {
-                width: 100%; /* Tam genişlik */
                 text-align: center;
-                margin-bottom: 1rem; /* Alt boşluk */
             }
 
-            header .flex.space-x-3 {
-                width: 100%; /* Tam genişlik */
-                justify-content: center; /* Ortala */
-                margin-top: 1rem; /* Üst boşluk */
+            .header-gradient .container > div {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .header-gradient .container .flex-col.sm:flex-row {
+                flex-direction: column;
+            }
+
+            .header-gradient .container .flex-col.sm:flex-row .flex-col.sm:flex-row {
+                flex-direction: column;
+                align-items: center;
+                margin-top: 1rem;
+            }
+
+            .header-gradient .container .flex-col.sm:flex-row .flex-col.sm:flex-row span {
+                margin-top: 0.5rem;
+                margin-left: 0 !important; /* Override sm:ml-10 */
+            }
+
+            nav.flex {
+                width: 100%;
+                justify-content: center;
+                margin-top: 1.5rem;
+                flex-wrap: wrap; /* Allow buttons to wrap */
+                gap: 0.75rem; /* Space between wrapped buttons */
             }
 
             .lang-button {
-                padding: 0.8rem 1.6rem; /* Dokunma alanını daha da artır */
-                font-size: 1.1rem; /* Yazı boyutunu daha da artır */
-                margin: 0.25rem; /* Düğmeler arasında boşluk */
+                flex-grow: 1; /* Allow buttons to grow and fill space */
+                max-width: 100px; /* Limit max width for better appearance */
+                font-size: 0.85rem; /* Slightly smaller font for mobile */
+                padding: 0.5rem 1rem; /* Adjust padding */
             }
-        }
-
-        /* Ana içerik ve footer için genel mobil uyumluluk */
-        .container.mx-auto.p-6 {
-            padding-left: 1rem;
-            padding-right: 1rem;
-        }
-
-        footer .container {
-            padding-left: 1rem;
-            padding-right: 1rem;
         }
     </style>
 </head>
@@ -618,7 +620,7 @@
                     <span id="currency-info" class="flex items-center bg-white/10 py-1 px-3 rounded-full backdrop-blur-sm"><i class="fas fa-coins mr-2"></i></span>
                 </div>
             </div>
-            <nav class="flex flex-wrap justify-center space-x-3 mt-4 sm:mt-0">
+            <nav class="flex space-x-3 mt-4 sm:mt-0">
                 <button id="lang-tr" class="lang-button">TR</button>
                 <button id="lang-en" class="lang-button">EN</button>
                 <button id="lang-ru" class="lang-button">RU</button>
@@ -629,10 +631,8 @@
     <main class="container mx-auto p-6 flex-grow">
         <!-- Breaking news bar -->
         <div class="breaking-news">
-            <div class="breaking-news-label-container">
-                <span id="breaking-news-label"><i class="fas fa-bolt mr-2"></i></span>
-            </div>
             <div id="breaking-content" class="breaking-content">
+                <span class="font-bold mr-4" id="breaking-news-label"><i class="fas fa-bolt mr-2"></i></span>
                 <span id="breaking-news-text">Yükleniyor...</span>
             </div>
         </div>
@@ -971,7 +971,7 @@
                         if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
                             firstMediaHtml = `<img src="${firstUrl}" alt="${newsItem.title}">`;
                         } else if (['mp4', 'webm', 'ogg'].includes(fileExtension)) {
-                            return `<div class="carousel-item"><video controls src="${firstUrl}"></video>`;
+                            firstMediaHtml = `<video controls src="${firstUrl}"></video>`;
                         } else {
                             firstMediaHtml = `<img src="https://placehold.co/600x400/E0E0E0/333333?text=No+News+Image" alt="No News Image">`;
                         }
