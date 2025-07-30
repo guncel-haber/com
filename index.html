@@ -7,151 +7,389 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Inter font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #f97316;
+            --dark: #1e293b;
+            --light: #f8fafc;
+        }
+        
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f0f2f5;
+            color: #333;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23f0f2f5" opacity="1"/><path d="M0,0 Q100,50 200,0 L200,200 Q100,150 0,200 Z" fill="%23e2e8f0" opacity="0.3"/></svg>');
+            background-size: cover;
         }
+        
+        .header-gradient {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
         .news-card {
             background-color: #ffffff;
-            border-radius: 0.75rem; /* rounded-lg */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
-            transition: transform 0.2s ease-in-out;
-            cursor: pointer; /* Tıklanabilir olduğunu belirtir */
+            border-radius: 16px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
+        
+        .news-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
         .news-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
+        
+        .news-card:hover::before {
+            opacity: 1;
+        }
+        
+        .news-card img, .news-card video {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            transition: transform 0.5s ease;
+        }
+        
+        .news-card:hover img, .news-card:hover video {
+            transform: scale(1.05);
+        }
+        
         .lang-button {
-            padding: 0.25rem 0.5rem; /* px-2 py-1 */
-            font-size: 0.875rem; /* text-sm */
-            border-radius: 0.375rem; /* rounded-md */
-            font-weight: 600; /* font-semibold */
-            background-color: rgba(255, 255, 255, 0.2);
+            padding: 0.6rem 1.2rem;
+            font-size: 0.95rem;
+            border-radius: 50px;
+            font-weight: 600;
+            background-color: rgba(255, 255, 255, 0.15);
             color: white;
-            transition: background-color 0.2s ease-in-out;
+            transition: all 0.2s ease-in-out;
+            border: 2px solid rgba(255, 255, 255, 0.2);
         }
+        
+        .lang-button:hover {
+            transform: translateY(-3px);
+            background-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
         .lang-button.active {
             background-color: white;
-            color: #2563eb; /* blue-600 */
-        }
-        /* Modal Stilleri */
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1000; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background-color: #fefefe;
-            margin: auto;
-            padding: 20px;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            width: 90%;
-            max-width: 800px; /* Modal genişliğini artırdık */
-            max-height: 90vh; /* Ekran yüksekliğinin %90'ı */
-            overflow-y: auto; /* İçerik taşarsa kaydırma çubuğu */
-        }
-        .close-button {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .close-button:hover,
-        .close-button:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
+            color: var(--primary);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-color: transparent;
         }
 
-        /* Carousel Stilleri */
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+        }
+        
+        .modal-content {
+            background-color: #ffffff;
+            margin: auto;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: fadeInScale 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+        
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+        
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        .close-button {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: #94a3b8;
+            font-size: 32px;
+            font-weight: normal;
+            transition: all 0.2s ease;
+            z-index: 10;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .close-button:hover {
+            color: var(--primary-dark);
+            background-color: rgba(0, 0, 0, 0.03);
+            transform: rotate(90deg);
+        }
+
+        /* Carousel Styles */
         .carousel-container {
             position: relative;
             width: 100%;
             overflow: hidden;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
+        
         .carousel-inner {
             display: flex;
-            transition: transform 0.5s ease-in-out;
+            transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
         }
+        
         .carousel-item {
             min-width: 100%;
             box-sizing: border-box;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #e2e8f0; /* gray-200 */
+            background-color: #f1f5f9;
         }
+        
         .carousel-item img,
         .carousel-item video {
             width: 100%;
-            height: 400px; /* Carousel yüksekliğini sabit tut */
-            object-fit: contain; /* Medyanın tamamının görünmesini sağlar */
-            border-radius: 0.5rem;
+            height: 480px;
+            object-fit: contain;
+            border-radius: 16px;
         }
+        
         .carousel-button {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: var(--dark);
             border: none;
-            padding: 0.5rem 1rem;
+            padding: 0.75rem 1.25rem;
             cursor: pointer;
-            font-size: 1.5rem;
-            border-radius: 0.375rem;
+            font-size: 1.8rem;
+            border-radius: 50%;
             z-index: 10;
+            transition: all 0.3s ease;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
         }
+        
+        .carousel-button:hover {
+            background-color: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+        
         .carousel-button.prev {
-            left: 0.5rem;
+            left: 20px;
         }
+        
         .carousel-button.next {
-            right: 0.5rem;
+            right: 20px;
         }
+        
         .carousel-dots {
             display: flex;
             justify-content: center;
-            margin-top: 0.5rem;
+            margin-top: 1.5rem;
+            gap: 10px;
         }
+        
         .dot {
-            height: 10px;
-            width: 10px;
-            margin: 0 5px;
-            background-color: #bbb;
+            height: 14px;
+            width: 14px;
+            background-color: #cbd5e1;
             border-radius: 50%;
             display: inline-block;
-            transition: background-color 0.6s ease;
+            transition: all 0.3s ease;
             cursor: pointer;
         }
+        
         .dot.active {
-            background-color: #717171;
+            background-color: var(--primary);
+            transform: scale(1.3);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Floating action button */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            z-index: 99;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .fab:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+        }
+        
+        /* Breaking news bar */
+        .breaking-news {
+            background: linear-gradient(90deg, #dc2626, #b91c1c);
+            color: white;
+            padding: 12px 0;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Removed fixed content from here */
+        .breaking-news::before {
+            content: ""; /* Content will be set by JS */
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 140px;
+            background: rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+        
+        .breaking-content {
+            padding-left: 150px;
+            white-space: nowrap;
+            overflow: hidden;
+            animation: marquee 25s linear infinite;
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        /* Weather widget */
+        .weather-widget {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .weather-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+        }
+        
+        /* Animation for cards */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-card {
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+        }
+        
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 800;
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
-    <header class="bg-blue-600 text-white p-4 shadow-md">
+    <header class="header-gradient text-white p-6">
         <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center">
-            <div class="flex flex-col sm:flex-row items-center w-full sm:w-auto mb-2 sm:mb-0">
-                <h1 id="main-title" class="text-3xl font-bold mb-2 sm:mb-0 sm:mr-4">Güncel Haberler</h1>
-                <div class="text-sm flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-4">
-                    <span id="current-date-time"></span>
-                    <span id="weather-info"></span>
-                    <span id="currency-info"></span>
+            <div class="flex flex-col sm:flex-row items-center w-full sm:w-auto mb-3 sm:mb-0">
+                <div class="flex items-center">
+                    <div class="mr-4 bg-white p-2 rounded-full">
+                        <i class="fas fa-newspaper text-2xl text-blue-600"></i>
+                    </div>
+                    <h1 id="main-title" class="text-4xl font-extrabold tracking-wide">
+                        <span class="gradient-text">Güncel</span> Haberler
+                    </h1>
+                </div>
+                <div class="mt-4 sm:mt-0 sm:ml-10 text-sm flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-6">
+                    <span id="current-date-time" class="flex items-center bg-white/10 py-1 px-3 rounded-full"><i class="far fa-calendar-alt mr-2"></i></span>
+                    <span id="weather-info" class="flex items-center bg-white/10 py-1 px-3 rounded-full"><i class="fas fa-cloud-sun mr-2"></i></span>
+                    <span id="currency-info" class="flex items-center bg-white/10 py-1 px-3 rounded-full"><i class="fas fa-coins mr-2"></i></span>
                 </div>
             </div>
-            <nav class="flex space-x-2">
+            <nav class="flex space-x-3 mt-4 sm:mt-0">
                 <button id="lang-tr" class="lang-button">TR</button>
                 <button id="lang-en" class="lang-button">EN</button>
                 <button id="lang-ru" class="lang-button">RU</button>
@@ -159,42 +397,90 @@
         </div>
     </header>
 
-    <main class="container mx-auto p-4 flex-grow">
-        <section id="news-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Haberler buraya yüklenecek -->
-            <div id="loading-indicator" class="col-span-full text-center text-gray-600 text-lg py-8">Haberler yükleniyor...</div>
-        </section>
+    <main class="container mx-auto p-6 flex-grow">
+        <!-- Breaking news bar -->
+        <div class="breaking-news">
+            <div id="breaking-content" class="breaking-content">
+                <!-- "SON DAKİKA" label will now be translated -->
+                <span class="font-bold mr-4" id="breaking-news-label"><i class="fas fa-bolt mr-2"></i></span>
+                <span id="breaking-news-text">Yükleniyor...</span>
+            </div>
+        </div>
+        
+        <!-- Category tabs removed as per request -->
+        
+        <section id="news-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- News will be loaded here -->
+            <div id="loading-indicator" class="col-span-full text-center text-gray-600 text-xl py-12 animate-pulse">
+                <i class="fas fa-spinner fa-spin mr-2"></i>Haberler yükleniyor...
+            </div>
+        
+        <!-- Weather widget -->
+        <div class="weather-widget">
+            <div class="weather-icon">
+                <i class="fas fa-sun"></i>
+            </div>
+            <div>
+                <div class="font-bold text-lg" id="weather-city">İstanbul</div>
+                <div class="text-gray-600" id="weather-description">24°C | Güneşli</div>
+            </div>
+            <div class="ml-auto text-right">
+                <div class="font-semibold" id="weather-humidity">Nem: %42</div>
+                <div class="text-gray-600" id="weather-wind">Rüzgar: 8 km/s</div>
+            </div>
+        </div>
     </main>
 
-    <footer class="bg-gray-800 text-white p-4 text-center mt-auto">
-        <p id="footer-text">&copy; 2025 Haber Sitesi. Tüm Hakları Saklıdır.</p>
+    <footer class="bg-gray-900 text-white p-6 text-center mt-auto">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <h3 id="footer-title" class="text-xl font-bold">Güncel Haberler</h3>
+                    <p id="footer-tagline" class="text-gray-400 mt-1">Doğru ve tarafsız haberin adresi</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="mt-6 pt-6 border-t border-gray-800">
+                <p id="footer-text" class="text-gray-400">&copy; 2025 Haber Sitesi. Tüm Hakları Saklıdır.</p>
+            </div>
+        </div>
     </footer>
 
-    <!-- Haber Detay Modalı -->
+    <!-- Floating action button -->
+    <div class="fab">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- News Detail Modal -->
     <div id="news-detail-modal" class="modal">
         <div class="modal-content">
             <button id="close-modal-button" class="close-button">&times;</button>
             <div id="modal-content-inner">
-                <!-- Haber detayı buraya yüklenecek -->
-                <div id="modal-loading" class="text-center text-gray-600 text-lg py-8">Haber yükleniyor...</div>
+                <!-- News detail will be loaded here -->
+                <div id="modal-loading" class="text-center text-gray-600 text-xl py-12 animate-pulse">Haber yükleniyor...</div>
             </div>
         </div>
     </div>
 
-    <!-- Firebase SDK'ları -->
+    <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, query, onSnapshot, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Firebase configuration
+        // Firebase configuration (API key and other details remain unchanged as per request)
         let firebaseConfig;
         let initialAuthToken;
         if (typeof __firebase_config !== 'undefined' && typeof __initial_auth_token !== 'undefined') {
             firebaseConfig = JSON.parse(__firebase_config);
             initialAuthToken = __initial_auth_token;
         } else {
-            // Provide your own fallback config for local testing
+            // Fallback config for local testing if not running in Canvas environment
             firebaseConfig = {
                 apiKey: "AIzaSyAzBBgPme5oA1xWBp3o8c0kk_65TcWBDEk",
                 authDomain: "turkmenistan-consulate.firebaseapp.com",
@@ -221,9 +507,19 @@
         const loadingIndicator = document.getElementById('loading-indicator');
         const mainTitle = document.getElementById('main-title');
         const footerText = document.getElementById('footer-text');
+        const footerTagline = document.getElementById('footer-tagline'); // Yeni eklenen element
+        const footerTitle = document.getElementById('footer-title'); // Yeni eklenen element
         const currentDateTimeSpan = document.getElementById('current-date-time');
         const weatherInfoSpan = document.getElementById('weather-info');
         const currencyInfoSpan = document.getElementById('currency-info');
+        const breakingNewsLabel = document.getElementById('breaking-news-label'); // Element for "BREAKING" label
+        const breakingNewsTextSpan = document.getElementById('breaking-news-text');
+
+        // New weather widget elements
+        const weatherCitySpan = document.getElementById('weather-city');
+        const weatherDescriptionSpan = document.getElementById('weather-description');
+        const weatherHumiditySpan = document.getElementById('weather-humidity');
+        const weatherWindSpan = document.getElementById('weather-wind');
 
         // Modal elements
         const newsDetailModal = document.getElementById('news-detail-modal');
@@ -239,17 +535,24 @@
                 noNews: "Bu dilde henüz haber bulunmamaktadır.",
                 errorLoadingNews: "Haberler yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
                 footer: "&copy; 2025 Haber Sitesi. Tüm Hakları Saklıdır.",
+                footerTagline: "Doğru ve tarafsız haberin adresi",
+                footerTitle: "Güncel Haberler", // Yeni eklenen çeviri
                 authError: "Oturum açılırken bir hata oluştu.",
                 datePrefix: "Tarih:",
-                timePrefix: "Saat:",
                 weatherPrefix: "Hava:",
                 weatherApiKeyMissing: "API Anahtarı Eksik",
                 weatherInfoNotAvailable: "Bilgi Yok",
                 weatherUnauthorized: "API Anahtarı geçersiz veya etkin değil. Yeni anahtarların tamamen etkinleşmesi 2 saate kadar sürebilir.",
                 currencyPrefix: "Kurlar:",
                 downloadFile: "Dosyayı İndir",
-                publishedDate: "Yayınlanma Tarihi:",
-                language: "Dil:"
+                language: "Dil:",
+                newsNotFound: "Haber bulunamadı.",
+                breakingNewsLabel: "SON DAKİKA:", 
+                breakingNewsLoading: "Son dakika haberi yükleniyor...",
+                breakingNewsDefault: "Henüz bir son dakika haberi yok.",
+                cityIstanbul: "İstanbul",
+                humidity: "Nem:",
+                wind: "Rüzgar:",
             },
             en: {
                 mainTitle: "Latest News",
@@ -257,17 +560,24 @@
                 noNews: "No news available in this language yet.",
                 errorLoadingNews: "An error occurred while loading news. Please try again later.",
                 footer: "&copy; 2025 News Website. All Rights Reserved.",
+                footerTagline: "The address for accurate and unbiased news",
+                footerTitle: "Latest News", // Yeni eklenen çeviri
                 authError: "An error occurred during sign-in.",
                 datePrefix: "Date:",
-                timePrefix: "Time:",
                 weatherPrefix: "Weather:",
                 weatherApiKeyMissing: "API Key Missing",
                 weatherInfoNotAvailable: "N/A",
                 weatherUnauthorized: "API Key invalid or inactive. New keys can take up to 2 hours to fully activate.",
                 currencyPrefix: "Rates:",
                 downloadFile: "Download File",
-                publishedDate: "Published Date:",
-                language: "Language:"
+                language: "Language:",
+                newsNotFound: "News not found.",
+                breakingNewsLabel: "BREAKING:", 
+                breakingNewsLoading: "Loading breaking news...",
+                breakingNewsDefault: "No breaking news available yet.",
+                cityIstanbul: "Istanbul",
+                humidity: "Humidity:",
+                wind: "Wind:",
             },
             ru: {
                 mainTitle: "Последние новости",
@@ -275,34 +585,52 @@
                 noNews: "Новостей на этом языке пока нет.",
                 errorLoadingNews: "Произошла ошибка при загрузке новостей. Пожалуйста, попробуйте позже.",
                 footer: "&copy; 2025 Новостной сайт. Все права защищены.",
+                footerTagline: "Адрес для точных и беспристрастных новостей",
+                footerTitle: "Последние новости", // Yeni eklenen çeviri
                 authError: "Произошла ошибка при входе.",
                 datePrefix: "Дата:",
-                timePrefix: "Время:",
                 weatherPrefix: "Погода:",
                 weatherApiKeyMissing: "Отсутствует ключ API",
                 weatherInfoNotAvailable: "Н/Д",
                 weatherUnauthorized: "Ключ API недействителен или неактивен. Полная активация новых ключей может занять до 2 часов.",
                 currencyPrefix: "Курсы:",
                 downloadFile: "Скачать файл",
-                publishedDate: "Дата публикации:",
-                language: "Язык:"
+                language: "Язык:",
+                newsNotFound: "Новость не найдена.",
+                breakingNewsLabel: "СРОЧНО:", 
+                breakingNewsLoading: "Загрузка срочных новостей...",
+                breakingNewsDefault: "Срочных новостей пока нет.",
+                cityIstanbul: "Стамбул",
+                humidity: "Влажность:",
+                wind: "Ветер:",
             }
         };
 
-        // Update UI texts
+        // Update UI texts based on current language
         function updateUI() {
             mainTitle.textContent = translations[currentLanguage].mainTitle;
             footerText.innerHTML = translations[currentLanguage].footer;
+            footerTagline.textContent = translations[currentLanguage].footerTagline;
+            footerTitle.textContent = translations[currentLanguage].footerTitle; // Footer başlığını güncelledik
             loadingIndicator.textContent = translations[currentLanguage].loadingNews;
+            breakingNewsLabel.textContent = translations[currentLanguage].breakingNewsLabel; // Update breaking news label
+            breakingNewsTextSpan.textContent = translations[currentLanguage].breakingNewsLoading; // Initial breaking news loading text
+            
+            // Update weather widget static texts
+            weatherCitySpan.textContent = translations[currentLanguage].cityIstanbul;
+            weatherHumiditySpan.textContent = `${translations[currentLanguage].humidity} ${translations[currentLanguage].weatherInfoNotAvailable}`; // Initial state
+            weatherWindSpan.textContent = `${translations[currentLanguage].wind} ${translations[currentLanguage].weatherInfoNotAvailable}`; // Initial state
         }
 
         // Language change function
         function setLanguage(lang) {
             currentLanguage = lang;
             updateUI(); // Update UI texts based on new language
+            updateDateTime(); // Tarihi de güncelledik
             fetchNews(); // Reload news based on new language
             updateActiveButton(lang); // Update active button
             fetchExternalData(); // Update weather and currency rates based on new language
+            fetchBreakingNews(); // Update breaking news based on new language
         }
 
         // Highlight active language button
@@ -316,38 +644,54 @@
             });
         }
 
-        // Fetch and display news from Firestore
-        function fetchNews() {
+        // Fetch and display breaking news from Firestore
+        function fetchBreakingNews() {
             if (!userId) {
-                console.log("Haber sitesi: Kullanıcı kimliği bekleniyor...");
+                console.log("News site: Waiting for user ID (for breaking news)...");
                 return;
             }
 
-            // Clear previous news
+            // Listen to the specific breaking news document for the current language
+            const breakingNewsDocRef = doc(db, `artifacts/${appId}/public/data/breakingNews`, currentLanguage);
+
+            onSnapshot(breakingNewsDocRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    if (data.text) { // Only update if text exists
+                        breakingNewsTextSpan.textContent = data.text;
+                    } else {
+                        breakingNewsTextSpan.textContent = translations[currentLanguage].breakingNewsDefault;
+                    }
+                } else {
+                    breakingNewsTextSpan.textContent = translations[currentLanguage].breakingNewsDefault;
+                }
+            }, (error) => {
+                console.error("News site: Error fetching breaking news:", error);
+                breakingNewsTextSpan.textContent = translations[currentLanguage].breakingNewsDefault;
+            });
+        }
+
+        // Fetch and display news from Firestore
+        function fetchNews() {
+            if (!userId) {
+                console.log("News site: Waiting for user ID...");
+                return;
+            }
+
+            // Clear previous news and show loading indicator
             newsListDiv.innerHTML = '';
-            newsListDiv.appendChild(loadingIndicator); // Re-add loading indicator
+            newsListDiv.appendChild(loadingIndicator);
 
             const newsQuery = collection(db, `artifacts/${appId}/public/data/news`);
 
-            console.log("Haber sitesi: Haberler için anlık görüntü dinleyicisi başlatılıyor...");
-            // IMPORTANT: Ensure your Firebase Firestore security rules allow read access to the following collection:
-            // Go to your Firebase Console -> Firestore Database -> Rules tab and add the following rules:
-            // rules_version = '2';
-            // service cloud.firestore {
-            //   match /databases/{database}/documents {
-            //     match /artifacts/{appId}/public/data/news/{documentId} {
-            //       allow read: if true; // Everyone can read
-            //       allow write: if request.auth != null; // Only authenticated users can write (for admin panel)
-            //     }
-            //   }
-            // }
+            console.log("News site: Starting snapshot listener for news...");
             onSnapshot(newsQuery, (snapshot) => {
                 const news = [];
                 snapshot.forEach((doc) => {
                     news.push({ id: doc.id, ...doc.data() });
                 });
 
-                console.log("Haber sitesi: Firestore'dan çekilen tüm haberler:", news.map(item => ({ title: item.title, language: item.language, id: item.id })));
+                console.log("News site: All news fetched from Firestore:", news.map(item => ({ title: item.title, language: item.language, id: item.id })));
 
                 // Sort news by timestamp (latest first)
                 news.sort((a, b) => (b.timestamp?.toDate() || 0) - (a.timestamp?.toDate() || 0));
@@ -358,10 +702,10 @@
                 // Filter news by current language
                 const filteredNews = news.filter(item => item.language === currentLanguage);
 
-                console.log("Haber sitesi: Mevcut dil (" + currentLanguage + ") için filtrelenmiş haberler:", filteredNews.map(item => ({ title: item.title, language: item.language })));
+                console.log("News site: Filtered news for current language (" + currentLanguage + "):", filteredNews.map(item => ({ title: item.title, language: item.language })));
 
                 if (filteredNews.length === 0) {
-                    newsListDiv.innerHTML = `<div class="col-span-full text-center text-gray-600 text-lg py-8">${translations[currentLanguage].noNews}</div>`;
+                    newsListDiv.innerHTML = `<div class="col-span-full text-center text-gray-600 text-xl py-12">${translations[currentLanguage].noNews}</div>`;
                     return;
                 }
 
@@ -382,17 +726,22 @@
                         } else if (['mp4', 'webm', 'ogg'].includes(fileExtension)) {
                             firstMediaHtml = `<video controls src="${firstUrl}" class="w-full h-48 object-cover rounded-md mb-4"></video>`;
                         } else {
-                            firstMediaHtml = `<a href="${firstUrl}" target="_blank" class="text-blue-500 hover:underline mb-4 block">${translations[currentLanguage].downloadFile || 'Dosyayı İndir'}</a>`;
+                            // Placeholder for other file types or if image/video is not available
+                            firstMediaHtml = `<img src="https://placehold.co/600x400/E0E0E0/333333?text=No+News+Image" alt="No News Image" class="w-full h-48 object-cover rounded-md mb-4">`;
                         }
+                    } else {
+                        // Default placeholder image if no media is provided
+                        firstMediaHtml = `<img src="https://placehold.co/600x400/E0E0E0/333333?text=No+News+Image" alt="No News Image" class="w-full h-48 object-cover rounded-md mb-4">`;
                     }
 
                     newsCardDiv.innerHTML = `
                         <div>
                             ${firstMediaHtml}
-                            <h2 class="text-xl font-bold text-gray-900 mb-2">${newsItem.title}</h2>
+                            <h2 class="text-2xl font-bold text-gray-900 mb-3 leading-tight">${newsItem.title}</h2>
+                            <p class="text-gray-700 text-base line-clamp-3">${newsItem.content}</p>
                         </div>
                         <div class="text-sm text-gray-500 mt-4">
-                            ${newsItem.timestamp ? new Date(newsItem.timestamp.toDate()).toLocaleString() : translations[currentLanguage].noDate || 'Tarih Yok'}
+                            ${newsItem.timestamp ? new Date(newsItem.timestamp.toDate()).toLocaleDateString(currentLanguage, { year: 'numeric', month: 'long', day: 'numeric' }) : 'No Date'}
                         </div>
                     `;
                     newsListDiv.appendChild(newsCardDiv);
@@ -401,65 +750,78 @@
                     newsCardDiv.addEventListener('click', () => showNewsDetailModal(newsItem.id));
                 });
             }, (error) => {
-                console.error("Haber sitesi: Haberler çekilirken hata oluştu:", error);
-                newsListDiv.innerHTML = `<div class="col-span-full text-center text-red-500 text-lg py-8">${translations[currentLanguage].errorLoadingNews}</div>`;
+                console.error("News site: Error fetching news:", error);
+                newsListDiv.innerHTML = `<div class="col-span-full text-center text-red-500 text-xl py-12">${translations[currentLanguage].errorLoadingNews}</div>`;
             });
         }
 
-        // Update current date and time
+        // Update current date (time is removed as per request)
         function updateDateTime() {
             const now = new Date();
             const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
-            currentDateTimeSpan.textContent = `${translations[currentLanguage].datePrefix} ${now.toLocaleDateString(currentLanguage, dateOptions)} ${translations[currentLanguage].timePrefix} ${now.toLocaleTimeString(currentLanguage, timeOptions)}`;
+            currentDateTimeSpan.textContent = `${translations[currentLanguage].datePrefix} ${now.toLocaleDateString(currentLanguage, dateOptions)}`;
         }
 
         // Fetch weather and currency rates (Weather from API, currency from API)
         async function fetchExternalData() {
             // Weather (requires OpenWeatherMap API key)
-            // NOTE: It may take up to 2 hours for newly created API keys to fully activate.
-            // During this time, it is normal to receive an "Unauthorized" error. Please wait and try again.
             const weatherApiKey = '0a4aabd9dbf04547a786c4a6d8fcf155'; 
             const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=Istanbul&appid=${weatherApiKey}&units=metric&lang=${currentLanguage}`;
 
             if (!weatherApiKey || weatherApiKey === 'YOUR_OPENWEATHERMAP_API_KEY') {
                 weatherInfoSpan.textContent = `${translations[currentLanguage].weatherPrefix} ${translations[currentLanguage].weatherApiKeyMissing}`;
-                console.warn("Hava durumu API anahtarı eksik veya geçersiz. Lütfen 'YOUR_OPENWEATHERMAP_API_KEY' placeholder'ını kendi anahtarınızla değiştirin.");
+                weatherDescriptionSpan.textContent = translations[currentLanguage].weatherInfoNotAvailable;
+                weatherHumiditySpan.textContent = `${translations[currentLanguage].humidity} ${translations[currentLanguage].weatherInfoNotAvailable}`;
+                weatherWindSpan.textContent = `${translations[currentLanguage].wind} ${translations[currentLanguage].weatherInfoNotAvailable}`;
+                console.warn("Weather API key is missing or invalid. Please replace 'YOUR_OPENWEATHERMAP_API_KEY' placeholder with your own key.");
             } else {
                 try {
                     const response = await fetch(weatherUrl);
                     if (response.ok) {
                         const data = await response.json();
-                        weatherInfoSpan.textContent = `${translations[currentLanguage].weatherPrefix} ${data.main.temp}°C, ${data.weather[0].description}`;
+                        weatherInfoSpan.innerHTML = `<i class="fas fa-cloud-sun mr-2"></i> ${translations[currentLanguage].weatherPrefix} ${data.main.temp}°C, ${data.weather[0].description}`;
+                        
+                        // Update specific weather widget elements
+                        weatherCitySpan.textContent = translations[currentLanguage].cityIstanbul; // City name
+                        weatherDescriptionSpan.textContent = `${data.main.temp}°C | ${data.weather[0].description}`; // Temperature and description
+                        weatherHumiditySpan.textContent = `${translations[currentLanguage].humidity} ${data.main.humidity}%`; // Humidity
+                        weatherWindSpan.textContent = `${translations[currentLanguage].wind} ${data.wind.speed} km/s`; // Wind speed
                     } else {
-                        // For more detailed error message
-                        const errorText = await response.text(); // Get error response as text
-                        weatherInfoSpan.textContent = `${translations[currentLanguage].weatherPrefix} ${translations[currentLanguage].weatherUnauthorized}`;
-                        console.error(`Hava durumu çekilirken yetkilendirme hatası (${response.status} ${response.statusText}): API anahtarı geçersiz veya etkin değil. Yeni anahtarların etkinleşmesi zaman alabilir. Detay: ${errorText}`);
+                        const errorText = await response.text();
+                        weatherInfoSpan.innerHTML = `<i class="fas fa-exclamation-triangle mr-2 text-yellow-400"></i> ${translations[currentLanguage].weatherUnauthorized}`;
+                        weatherCitySpan.textContent = translations[currentLanguage].cityIstanbul; // Keep city name even on error
+                        weatherDescriptionSpan.textContent = translations[currentLanguage].weatherInfoNotAvailable; // Set to N/A on error
+                        weatherHumiditySpan.textContent = `${translations[currentLanguage].humidity} ${translations[currentLanguage].weatherInfoNotAvailable}`;
+                        weatherWindSpan.textContent = `${translations[currentLanguage].wind} ${translations[currentLanguage].weatherInfoNotAvailable}`;
+                        console.error(`Authorization error fetching weather (${response.status} ${response.statusText}): API key invalid or inactive. New keys may take time to activate. Detail: ${errorText}`);
                     }
                 } catch (error) {
-                    weatherInfoSpan.textContent = `${translations[currentLanguage].weatherPrefix} ${translations[currentLanguage].weatherInfoNotAvailable}`;
-                    console.error("Hava durumu çekilirken ağ hatası:", error);
+                    weatherInfoSpan.innerHTML = `<i class="fas fa-exclamation-circle mr-2 text-red-400"></i> ${translations[currentLanguage].weatherPrefix} ${translations[currentLanguage].weatherInfoNotAvailable}`;
+                    weatherCitySpan.textContent = translations[currentLanguage].cityIstanbul;
+                    weatherDescriptionSpan.textContent = translations[currentLanguage].weatherInfoNotAvailable;
+                    weatherHumiditySpan.textContent = `${translations[currentLanguage].humidity} ${translations[currentLanguage].weatherInfoNotAvailable}`;
+                    weatherWindSpan.textContent = `${translations[currentLanguage].wind} ${translations[currentLanguage].weatherInfoNotAvailable}`;
+                    console.error("Network error fetching weather:", error);
                 }
             }
 
             // Currency Rates (Example - You may need to use a different API)
-            const currencyUrl = `https://api.exchangerate-api.com/v4/latest/USD`; // Example API, you may need to register for actual use
+            const currencyUrl = `https://api.exchangerate-api.com/v4/latest/USD`;
 
             try {
                 const response = await fetch(currencyUrl);
                 if (response.ok) {
                     const data = await response.json();
                     const usdToTry = data.rates.TRY ? data.rates.TRY.toFixed(2) : 'N/A';
-                    const eurToTry = data.rates.EUR ? (data.rates.TRY / data.rates.EUR).toFixed(2) : 'N/A'; // Conversion from EUR/USD to TRY
-                    currencyInfoSpan.textContent = `${translations[currentLanguage].currencyPrefix} USD: ${usdToTry}₺, EUR: ${eurToTry}₺`;
+                    const eurToTry = data.rates.EUR ? (data.rates.TRY / data.rates.EUR).toFixed(2) : 'N/A';
+                    currencyInfoSpan.innerHTML = `<i class="fas fa-coins mr-2"></i> ${translations[currentLanguage].currencyPrefix} USD: ${usdToTry}₺, EUR: ${eurToTry}₺`;
                 } else {
-                    currencyInfoSpan.textContent = `${translations[currentLanguage].currencyPrefix} N/A`;
-                    console.error("Döviz kurları çekilirken hata oluştu:", response.statusText);
+                    currencyInfoSpan.innerHTML = `<i class="fas fa-exclamation-circle mr-2 text-red-400"></i> ${translations[currentLanguage].currencyPrefix} N/A`;
+                    console.error("Error fetching currency rates:", response.statusText);
                 }
             } catch (error) {
-                currencyInfoSpan.textContent = `${translations[currentLanguage].currencyPrefix} N/A`;
-                console.error("Döviz kurları çekilirken ağ hatası:", error);
+                currencyInfoSpan.innerHTML = `<i class="fas fa-exclamation-circle mr-2 text-red-400"></i> ${translations[currentLanguage].currencyPrefix} N/A`;
+                console.error("Network error fetching currency rates:", error);
             }
         }
 
@@ -487,16 +849,16 @@
                                     ${newsItem.mediaUrls.map(url => {
                                         const fileExtension = url.split('.').pop().toLowerCase();
                                         if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
-                                            return `<div class="carousel-item"><img src="${url}" alt="Medya"></div>`;
+                                            return `<div class="carousel-item"><img src="${url}" alt="Media"></div>`;
                                         } else if (['mp4', 'webm', 'ogg'].includes(fileExtension)) {
                                             return `<div class="carousel-item"><video controls src="${url}"></video></div>`;
                                         } else {
-                                            return `<div class="carousel-item"><a href="${url}" target="_blank" class="text-blue-500 hover:underline">${translations[currentLanguage].downloadFile || 'Dosyayı İndir'}</a></div>`;
+                                            return `<div class="carousel-item"><a href="${url}" target="_blank" class="text-blue-500 hover:underline">${translations[currentLanguage].downloadFile || 'Download File'}</a></div>`;
                                         }
                                     }).join('')}
                                 </div>
-                                <button class="carousel-button prev" id="carousel-prev">&#10094;</button>
-                                <button class="carousel-button next" id="carousel-next">&#10095;</button>
+                                ${newsItem.mediaUrls.length > 1 ? `<button class="carousel-button prev" id="carousel-prev">&#10094;</button>
+                                <button class="carousel-button next" id="carousel-next">&#10095;</button>` : ''}
                                 <div class="carousel-dots" id="carousel-dots">
                                     ${newsItem.mediaUrls.map((_, index) => `<span class="dot" data-index="${index}"></span>`).join('')}
                                 </div>
@@ -505,12 +867,12 @@
                     }
 
                     modalContentInnerDiv.innerHTML = `
-                        <h2 class="text-3xl font-bold text-gray-900 mb-4">${newsItem.title}</h2>
+                        <h2 class="text-4xl font-extrabold text-gray-900 mb-5 leading-tight">${newsItem.title}</h2>
                         ${mediaCarouselHtml}
                         <p class="text-gray-700 text-lg leading-relaxed mb-6">${newsItem.content}</p>
-                        <div class="text-sm text-gray-500">
-                            ${translations[currentLanguage].publishedDate} ${newsItem.timestamp ? new Date(newsItem.timestamp.toDate()).toLocaleString() : 'Tarih Yok'}
-                            <span class="ml-4">${translations[currentLanguage].language} ${newsItem.language.toUpperCase()}</span>
+                        <div class="text-sm text-gray-500 flex justify-between items-center">
+                            <span class="flex items-center"><i class="far fa-calendar-alt mr-2"></i> ${new Date(newsItem.timestamp.toDate()).toLocaleDateString(currentLanguage, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                            <span class="flex items-center"><i class="fas fa-globe mr-2"></i> ${translations[currentLanguage].language} ${newsItem.language.toUpperCase()}</span>
                         </div>
                     `;
 
@@ -520,11 +882,11 @@
                     }
 
                 } else {
-                    modalContentInnerDiv.innerHTML = `<div class="text-center text-red-500 text-lg py-8">Haber bulunamadı.</div>`;
+                    modalContentInnerDiv.innerHTML = `<div class="text-center text-red-500 text-xl py-12">${translations[currentLanguage].newsNotFound}</div>`;
                 }
             } catch (error) {
-                console.error("Haber detayı çekilirken hata oluştu:", error);
-                modalContentInnerDiv.innerHTML = `<div class="text-center text-red-500 text-lg py-8">Haber detayı yüklenirken bir hata oluştu.</div>`;
+                console.error("Error fetching news detail:", error);
+                modalContentInnerDiv.innerHTML = `<div class="text-center text-red-500 text-xl py-12">An error occurred while loading news details.</div>`;
             }
         }
 
@@ -537,15 +899,22 @@
             currentSlide = 0;
             updateCarousel();
 
-            document.getElementById('carousel-prev').addEventListener('click', () => {
-                currentSlide = (currentSlide === 0) ? totalSlides - 1 : currentSlide - 1;
-                updateCarousel();
-            });
+            const carouselPrevButton = document.getElementById('carousel-prev');
+            const carouselNextButton = document.getElementById('carousel-next');
 
-            document.getElementById('carousel-next').addEventListener('click', () => {
-                currentSlide = (currentSlide === totalSlides - 1) ? 0 : currentSlide + 1;
-                updateCarousel();
-            });
+            if (carouselPrevButton) {
+                carouselPrevButton.addEventListener('click', () => {
+                    currentSlide = (currentSlide === 0) ? totalSlides - 1 : currentSlide - 1;
+                    updateCarousel();
+                });
+            }
+
+            if (carouselNextButton) {
+                carouselNextButton.addEventListener('click', () => {
+                    currentSlide = (currentSlide === totalSlides - 1) ? 0 : currentSlide + 1;
+                    updateCarousel();
+                });
+            }
 
             document.querySelectorAll('.dot').forEach(dot => {
                 dot.addEventListener('click', (e) => {
@@ -589,8 +958,9 @@
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 userId = user.uid;
-                console.log("Haber sitesi: Kullanıcı kimliği:", userId);
+                console.log("News site: User ID:", userId);
                 fetchNews(); // Fetch news when user ID is obtained
+                fetchBreakingNews(); // Fetch breaking news when user ID is obtained
             } else {
                 // If no user, sign in anonymously
                 try {
@@ -600,8 +970,8 @@
                         await signInAnonymously(auth);
                     }
                 } catch (error) {
-                    console.error("Haber sitesi: Anonim oturum açma hatası:", error);
-                    newsListDiv.innerHTML = `<div class="col-span-full text-center text-red-500 text-lg py-8">${translations[currentLanguage].authError}</div>`;
+                    console.error("News site: Anonymous sign-in error:", error);
+                    newsListDiv.innerHTML = `<div class="col-span-full text-center text-red-500 text-xl py-12">${translations[currentLanguage].authError}</div>`;
                 }
             }
         });
@@ -616,9 +986,30 @@
             updateActiveButton(currentLanguage);
             updateUI();
             updateDateTime();
-            setInterval(updateDateTime, 1000); // Update date and time every second
             fetchExternalData();
             setInterval(fetchExternalData, 300000); // Update currency rates every 5 minutes
+            
+            // Add scroll to top functionality
+            const fab = document.querySelector('.fab');
+            fab.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Show/hide FAB based on scroll position
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    fab.style.opacity = '1';
+                    fab.style.visibility = 'visible';
+                    fab.style.transform = 'scale(1)';
+                } else {
+                    fab.style.opacity = '0';
+                    fab.style.visibility = 'hidden';
+                    fab.style.transform = 'scale(0.8)';
+                }
+            });
         });
     </script>
 </body>
