@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>e-anlik</title>
+    <title>FreshHaber-24.com</title>
     <!-- Favicon için SVG kodunu kullanarak dinamik ve mavi bir simge oluşturduk -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='gradient' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%233498db;stop-opacity:1' /><stop offset='100%' style='stop-color:%235dade2;stop-opacity:1' /></linearGradient></defs><circle cx='50' cy='50' r='45' fill='url(%23gradient)'/><path d='M30,50 L45,65 L70,35' stroke='white' stroke-width='8' fill='none' stroke-linecap='round' stroke-linejoin='round'><animate attributeName='stroke-dasharray' values='0 100; 100 0' dur='1.5s' repeatCount='indefinite' /></path><animateTransform attributeName='transform' attributeType='XML' type='rotate' from='0 50 50' to='360 50 50' dur='10s' repeatCount='indefinite' /></svg>" type="image/svg+xml">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='20' y='20' width='60' height='60' fill='%233498db'/><line x1='30' y1='35' x2='70' y2='35' stroke='white' stroke-width='5'/><line x1='30' y1='50' x2='70' y2='50' stroke='white' stroke-width='5'/><line x1='30' y1='65' x2='60' y2='65' stroke='white' stroke-width='5'/></svg>" type="image/svg+xml">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Inter font -->
@@ -251,79 +251,8 @@
             border-color: transparent;
         }
 
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background: rgba(15, 23, 42, 0.7); /* Daha az koyu */
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(8px); /* Daha az bulanıklık */
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .modal.show {
-            opacity: 1;
-        }
-        
-        .modal-content {
-            background: #ffffff; /* Beyaz arka plan */
-            margin: auto;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); /* Daha hafif gölge */
-            width: 90%;
-            max-width: 900px;
-            max-height: 90vh;
-            overflow-y: auto;
-            animation: fadeInScale 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid rgba(226, 232, 240, 0.8); /* Açık renk kenarlık */
-            position: relative;
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
-            color: #1f2937; /* Koyu metin rengi */
-        }
-        
-        .modal.show .modal-content {
-            transform: translateY(0);
-        }
-        
-        @keyframes fadeInScale {
-            from { opacity: 0; transform: translateY(20px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        
-        .close-button {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            color: #64748b; /* Koyu gri */
-            font-size: 32px;
-            font-weight: normal;
-            transition: all 0.2s ease;
-            z-index: 10;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
-        
-        .close-button:hover {
-            color: var(--primary);
-            background: rgba(0, 0, 0, 0.05); /* Koyu hover arka planı */
-            transform: rotate(90deg);
-        }
-
         /* Carousel Styles */
+        /* Genel karusel stilleri (ana sayfa ve detay sayfası için ortak) */
         .carousel-container {
             position: relative;
             width: 100%;
@@ -352,7 +281,7 @@
         .carousel-item img,
         .carousel-item video {
             width: 100%;
-            height: 480px;
+            height: 480px; /* Görseldeki yüksekliğe göre ayarlandı */
             object-fit: cover;
             border-radius: 16px;
         }
@@ -580,21 +509,9 @@
             font-weight: 800;
         }
         
-        /* News card badge */
+        /* Haber kartı kategori etiketi - görünmez yapıldı */
         .news-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 6px 15px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            z-index: 2;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            display: none; /* Kategori etiketini tamamen gizle */
         }
         
         /* News card date */
@@ -618,37 +535,6 @@
             height: 1px;
             background: linear-gradient(90deg, transparent, rgba(203, 213, 225, 0.5), transparent); /* Açık gri tonu */
             margin: 20px 0;
-        }
-        
-        /* Modal content styles */
-        .modal-news-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .modal-news-title::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            border-radius: 3px;
-        }
-        
-        .modal-news-content {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: #334155; /* Koyu metin rengi */
         }
         
         /* Loading spinner */
@@ -782,10 +668,6 @@
             transition: transform 0.3s ease;
         }
         
-        .dark .dark-mode-toggle {
-            background: var(--primary);
-        }
-        
         .dark .toggle-circle {
             transform: translateX(24px);
         }
@@ -855,6 +737,7 @@
             font-size: 0.85rem;
             display: flex;
             align-items: center;
+            color: #94a3b8; /* Varsayılan gri renk */
         }
         
         .change-up {
@@ -892,6 +775,7 @@
             background-color: #f8fafc;
             border-radius: 16px;
             overflow: hidden;
+            cursor: pointer; /* Karusel öğelerini tıklanabilir yap */
         }
 
         .news-carousel-item img {
@@ -1010,6 +894,79 @@
         .toast-message.show {
             opacity: 1;
         }
+
+        /* News Detail Page Styles */
+        .news-detail-page-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            color: #1f2937;
+            margin-top: 30px;
+        }
+
+        .news-detail-title {
+            /* Başlık font boyutu küçültüldü */
+            font-size: 1.5rem; /* Önceki 2.5rem idi */
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1rem; /* Margins also adjusted */
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+
+        .news-detail-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 3px;
+        }
+
+        .news-detail-content {
+            /* İçerik font boyutu küçültüldü */
+            font-size: 0.9rem; /* Önceki 1.1rem idi */
+            line-height: 1.8;
+            color: #334155;
+            margin-top: 20px;
+        }
+
+        .news-detail-media-carousel {
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .news-detail-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(203, 213, 225, 0.5);
+        }
+
+        .news-detail-info span {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+            margin-bottom: 10px;
+            color: #64748b;
+        }
+
+        .news-detail-info span i {
+            margin-right: 8px;
+        }
+
     </style>
 </head>
 <body class="min-h-screen flex flex-col"> <!-- Varsayılan olarak koyu mod kaldırıldı -->
@@ -1034,7 +991,8 @@
                     <span id="weather-info" class="flex items-center bg-white/30 py-1 px-3 rounded-full backdrop-blur-sm"><i class="fas fa-cloud-sun mr-2"></i></span>
                 </div>
             </div>
-            <nav class="flex flex-wrap justify-center space-x-3 mt-4 sm:mt-0">
+            <!-- Dil Seçenekleri sadece ana sayfada görünecek, haber detay sayfasında gizlenecek -->
+            <nav id="language-options" class="flex flex-wrap justify-center space-x-3 mt-4 sm:mt-0">
                 <button id="lang-tr" class="lang-button">TR</button>
                 <button id="lang-en" class="lang-button">EN</button>
                 <button id="lang-ru" class="lang-button">RU</button>
@@ -1042,44 +1000,30 @@
         </div>
     </header>
 
-    <main class="container mx-auto p-6 flex-grow">
+    <main class="container mx-auto p-6 flex-grow" id="main-content">
+        <!-- Main content will be dynamically loaded here -->
         <!-- Financial Ticker -->
         <div class="financial-ticker">
             <div class="ticker-container" id="financial-ticker">
                 <div class="ticker-item">
-                    <span class="ticker-label" data-lang-key="Dolar">Dolar:</span>
-                    <span class="ticker-value" id="ticker-usd">40,58</span>
-                    <span class="ticker-change change-up" id="ticker-usd-change">
-                        <span class="ticker-arrow">↑</span> %0,01
-                    </span>
+                    <span class="ticker-label"><i class="fas fa-dollar-sign mr-2"></i>Dolar (USD/TRY):</span>
+                    <span class="ticker-value" id="ticker-usd">--</span>
+                    <span class="ticker-change" id="ticker-usd-change">--</span>
                 </div>
                 <div class="ticker-item">
-                    <span class="ticker-label" data-lang-key="Euro">Euro:</span>
-                    <span class="ticker-value" id="ticker-eur">46,65</span>
-                    <span class="ticker-change change-down" id="ticker-eur-change">
-                        <span class="ticker-arrow">↓</span> %-0,42
-                    </span>
+                    <span class="ticker-label"><i class="fas fa-euro-sign mr-2"></i>Euro (EUR/TRY):</span>
+                    <span class="ticker-value" id="ticker-eur">--</span>
+                    <span class="ticker-change" id="ticker-eur-change">--</span>
                 </div>
                 <div class="ticker-item">
-                    <span class="ticker-label" data-lang-key="Altın">Altın:</span>
-                    <span class="ticker-value" id="ticker-gold">4.306</span>
-                    <span class="ticker-change change-down" id="ticker-gold-change">
-                        <span class="ticker-arrow">↓</span> %-0,77
-                    </span>
+                    <span class="ticker-label"><i class="fas fa-coins mr-2"></i>Altın (XAU/USD):</span>
+                    <span class="ticker-value" id="ticker-gold">--</span>
+                    <span class="ticker-change" id="ticker-gold-change">--</span>
                 </div>
                 <div class="ticker-item">
-                    <span class="ticker-label" data-lang-key="Borsa">Borsa:</span>
-                    <span class="ticker-value" id="ticker-stock">10.619</span>
-                    <span class="ticker-change change-up" id="ticker-stock-change">
-                        <span class="ticker-arrow">↑</span> %1,26
-                    </span>
-                </div>
-                <div class="ticker-item">
-                    <span class="ticker-label" data-lang-key="Bitcoin">Bitcoin:</span>
-                    <span class="ticker-value" id="ticker-btc">117.804</span>
-                    <span class="ticker-change change-up" id="ticker-btc-change">
-                        <span class="ticker-arrow">↑</span> %0,02
-                    </span>
+                    <span class="ticker-label"><i class="fab fa-btc mr-2"></i>Bitcoin (BTC/USD):</span>
+                    <span class="ticker-value" id="ticker-btc">--</span>
+                    <span class="ticker-change" id="ticker-btc-change">--</span>
                 </div>
             </div>
         </div>
@@ -1169,13 +1113,13 @@
         <div class="container mx-auto">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="mb-4 md:mb-0">
-                    <h3 id="footer-title" class="text-xl font-bold">e-anlik</h3>
+                    <h3 id="footer-title" class="text-xl font-bold">FreshHaber-24.com</h3>
                     <p id="footer-tagline" class="text-white mt-1">Doğru ve tarafsız haberin adresi</p>
                 </div>
                 <div class="flex flex-col items-center md:items-end"> <!-- Sosyal medya ikonları yerine iletişim bilgileri -->
                     <h4 class="text-lg font-semibold mb-2" data-lang-key="contact">İletişim</h4>
                     <p class="text-white flex items-center mb-1">
-                        <i class="fas fa-envelope mr-2"></i> info@e-anlik.com
+                        <i class="fas fa-envelope mr-2"></i> info@FreshHaber-24.com
                     </p>
                     <p class="text-white flex items-center">
                         <i class="fas fa-phone mr-2"></i> +90 545 507 12 11
@@ -1193,21 +1137,42 @@
         <i class="fas fa-arrow-up"></i>
     </div>
 
-    <!-- News Detail Modal -->
-    <div id="news-detail-modal" class="modal">
-        <div class="modal-content">
-            <button id="close-modal-button" class="close-button">&times;</button>
-            <div id="modal-content-inner">
-                <div id="modal-loading" class="text-center text-gray-400 text-xl py-12">
-                    <div class="spinner mb-4"></div>
-                    <div>Haber yükleniyor...</div>
+    <!-- Toast Message for Copy Link -->
+    <div id="toast-message" class="toast-message"></div>
+
+    <script id="news-detail-template" type="text/template">
+        <div class="news-detail-page-container">
+            <h2 class="news-detail-title">{{title}}</h2>
+            <div class="news-detail-media-carousel carousel-container">
+                <div class="carousel-inner" id="carousel-inner">
+                    <!-- Media items will be dynamically inserted here -->
+                </div>
+                {{#if hasMultipleMedia}}
+                    <button class="carousel-button prev" id="carousel-prev">&#10094;</button>
+                    <button class="carousel-button next" id="carousel-next">&#10095;</button>
+                {{/if}}
+                <div class="carousel-dots" id="carousel-dots">
+                    <!-- Carousel dots will be dynamically inserted here -->
+                </div>
+            </div>
+            <div class="divider"></div>
+            <p class="news-detail-content">{{content}}</p>
+            
+            <div class="news-detail-info">
+                <div class="flex gap-4 flex-wrap">
+                    <span><i class="far fa-calendar-alt mr-2"></i> {{formattedDate}}</span>
+                    <span><i class="far fa-clock mr-2"></i> {{formattedTime}}</span>
+                    <span><i class="fas fa-globe mr-2"></i> {{language}}</span>
+                    <!-- Kategori etiketi buradan kaldırıldı -->
+                </div>
+                <div class="news-share">
+                    <button class="share-btn" data-share-type="copy-link" title="{{translations.copyLink}}"><i class="fas fa-link"></i></button>
+                    <button class="share-btn" data-share-type="native-share" title="{{translations.share}}"><i class="fas fa-share-alt"></i></button>
                 </div>
             </div>
         </div>
-    </div>
+    </script>
 
-    <!-- Toast Message for Copy Link -->
-    <div id="toast-message" class="toast-message"></div>
 
     <!-- Firebase SDKs -->
     <script type="module">
@@ -1224,13 +1189,13 @@
         } else {
             // Fallback config for local testing if not running in Canvas environment
             firebaseConfig = {
-                apiKey: "AIzaSyAzBBgPme5oA1xWBp3o8c0kk_65TcWBDEk",
-                authDomain: "turkmenistan-consulate.firebaseapp.com",
-                projectId: "turkmenistan-consulate",
-                storageBucket: "turkmenistan-consulate.appspot.com",
-                messagingSenderId: "257518915632",
-                appId: "1:257518915632:web:0a069b8a563428336e9df5",
-                measurementId: "G-4VEHZYBFF2"
+                apiKey: "AIzaSyDiioUyEw5BqztVxkrfK7tAXz0EhB5sdSI",
+                authDomain: "e-anlik.firebaseapp.com",
+                projectId: "e-anlik",
+                storageBucket: "e-anlik.firebasestorage.app",
+                messagingSenderId: "573244688765",
+                appId: "1:573244688765:web:f16877532c15e3b13e2414",
+                measurementId: "G-JZWFKLJ15V"
             };
             initialAuthToken = null;
         }
@@ -1242,57 +1207,61 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        let currentLanguage = 'tr'; // Default language
+        // Dilin localStorage'dan yüklenmesi veya varsayılan olarak 'tr' ayarlanması
+        let currentLanguage = localStorage.getItem('currentLanguage') || 'tr'; 
         let currentCategory = 'Tümü'; // Default category
         let userId = null; // User ID
 
-        const newsListDiv = document.getElementById('news-list');
-        const loadingIndicator = document.getElementById('loading-indicator');
-        const mainTitle = document.getElementById('main-title');
-        const footerText = document.getElementById('footer-text');
-        const footerTagline = document.getElementById('footer-tagline');
-        const footerTitle = document.getElementById('footer-title');
-        const currentDateTimeSpan = document.getElementById('current-date-time');
-        const weatherInfoSpan = document.getElementById('weather-info');
-        const breakingNewsLabel = document.getElementById('breaking-news-label');
-        const breakingNewsTextSpan = document.getElementById('breaking-news-text');
-        const trendingNewsListDiv = document.getElementById('trending-news-list');
-        const trendingLoadingIndicator = document.getElementById('trending-loading-indicator');
-        const trendingNewsTitle = document.getElementById('trending-news-title');
+        const mainContentDiv = document.getElementById('main-content'); // Ana içerik div'i
+        const languageOptionsNav = document.getElementById('language-options'); // Dil seçenekleri nav elementi
+
+        // DOM element referansları, loadNewsFeed içinde yeniden atanacağı için const yerine let olarak tanımlandı
+        let newsListDiv = document.getElementById('news-list');
+        let loadingIndicator = document.getElementById('loading-indicator');
+        const mainTitle = document.getElementById('main-title'); // Bu değişmeyecek
+        let footerText = document.getElementById('footer-text');
+        let footerTagline = document.getElementById('footer-tagline');
+        let footerTitle = document.getElementById('footer-title');
+        let currentDateTimeSpan = document.getElementById('current-date-time');
+        let weatherInfoSpan = document.getElementById('weather-info');
+        let breakingNewsLabel = document.getElementById('breaking-news-label');
+        let breakingNewsTextSpan = document.getElementById('breaking-news-text');
+        let trendingNewsListDiv = document.getElementById('trending-news-list');
+        let trendingLoadingIndicator = document.getElementById('trending-loading-indicator');
+        let trendingNewsTitle = document.getElementById('trending-news-title');
 
         // New weather widget elements
-        const weatherCitySpan = document.getElementById('weather-city');
-        const weatherDescriptionSpan = document.getElementById('weather-description');
-        const weatherHumiditySpan = document.getElementById('weather-humidity');
-        const weatherWindSpan = document.getElementById('weather-wind');
-
-        // Modal elements
-        const newsDetailModal = document.getElementById('news-detail-modal');
-        const modalContentInnerDiv = document.getElementById('modal-content-inner');
-        const closeModalButton = document.getElementById('close-modal-button');
-        const modalLoadingIndicator = document.getElementById('modal-loading');
+        let weatherCitySpan = document.getElementById('weather-city');
+        let weatherDescriptionSpan = document.getElementById('weather-description');
+        let weatherHumiditySpan = document.getElementById('weather-humidity');
+        let weatherWindSpan = document.getElementById('weather-wind');
 
         // Dark mode toggle
         const darkModeToggle = document.querySelector('.dark-mode-toggle');
 
         // Financial ticker elements
-        const tickerUsd = document.getElementById('ticker-usd');
-        const tickerUsdChange = document.getElementById('ticker-usd-change');
-        const tickerEur = document.getElementById('ticker-eur');
-        const tickerEurChange = document.getElementById('ticker-eur-change');
-        const tickerGold = document.getElementById('ticker-gold');
-        const tickerGoldChange = document.getElementById('ticker-gold-change');
-        const tickerStock = document.getElementById('ticker-stock');
-        const tickerStockChange = document.getElementById('ticker-stock-change');
-        const tickerBtc = document.getElementById('ticker-btc');
-        const tickerBtcChange = document.getElementById('ticker-btc-change');
+        let tickerUsd = document.getElementById('ticker-usd');
+        let tickerUsdChange = document.getElementById('ticker-usd-change');
+        let tickerEur = document.getElementById('ticker-eur');
+        let tickerEurChange = document.getElementById('ticker-eur-change');
+        let tickerGold = document.getElementById('ticker-gold');
+        let tickerGoldChange = document.getElementById('ticker-gold-change');
+        // FIX: Removed the erroneous assignment to 'document'
+        let tickerBtc = document.getElementById('ticker-btc');
+        let tickerBtcChange = document.getElementById('ticker-btc-change');
+
+        // Financial ticker label elements for translation
+        let tickerUsdLabel = document.querySelector('#financial-ticker .ticker-item:nth-child(1) .ticker-label');
+        let tickerEurLabel = document.querySelector('#financial-ticker .ticker-item:nth-child(2) .ticker-label');
+        let tickerGoldLabel = document.querySelector('#financial-ticker .ticker-item:nth-child(3) .ticker-label');
+        let tickerBtcLabel = document.querySelector('#financial-ticker .ticker-item:nth-child(4) .ticker-label');
 
         // Haber Karusel elementleri
-        const newsCarouselContainer = document.getElementById('news-carousel-container');
-        const newsCarouselInner = document.getElementById('news-carousel-inner');
-        const newsCarouselPrevButton = document.getElementById('news-carousel-prev');
-        const newsCarouselNextButton = document.getElementById('news-carousel-next');
-        const newsCarouselDotsContainer = document.getElementById('news-carousel-dots');
+        let newsCarouselContainer = document.getElementById('news-carousel-container');
+        let newsCarouselInner = document.getElementById('news-carousel-inner');
+        let newsCarouselPrevButton = document.getElementById('news-carousel-prev');
+        let newsCarouselNextButton = document.getElementById('news-carousel-next');
+        let newsCarouselDotsContainer = document.getElementById('news-carousel-dots');
         let currentNewsSlide = 0;
         let totalNewsSlides = 0;
 
@@ -1312,13 +1281,13 @@
         // Translations
         const translations = {
             tr: {
-                mainTitle: "e-anlik",
+                mainTitle: "FreshHaber-24.com",
                 loadingNews: "Haberler yükleniyor...",
                 noNews: "Bu dilde henüz haber bulunmamaktadır.",
                 errorLoadingNews: "Haberler yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
                 footer: "&copy; 2025 Haber Sitesi. Tüm Hakları Saklıdır.",
                 footerTagline: "Doğru ve tarafsız haberin adresi",
-                footerTitle: "e-anlik",
+                footerTitle: "FreshHaber-24.com",
                 authError: "Oturum açılırken bir hata oluştu.",
                 datePrefix: "Tarih:",
                 weatherPrefix: "Hava:",
@@ -1350,21 +1319,20 @@
                 linkCopied: "Bağlantı kopyalandı!",
                 share: "Paylaş",
                 contact: "İletişim",
-                Dolar: "Dolar:",
-                Euro: "Euro:",
-                Altın: "Altın:",
-                Borsa: "Borsa:",
-                Bitcoin: "Bitcoin:",
+                Dolar: "Dolar",
+                Euro: "Euro",
+                Altın: "Altın",
+                Bitcoin: "Bitcoin",
                 time: "Saat:"
             },
             en: {
-                mainTitle: "e-anlik",
+                mainTitle: "FreshHaber-24.com",
                 loadingNews: "Loading news...",
                 noNews: "No news available in this language yet.",
                 errorLoadingNews: "An error occurred while loading news. Please try again later.",
                 footer: "&copy; 2025 News Website. All Rights Reserved.",
                 footerTagline: "The address for accurate and unbiased news",
-                footerTitle: "e-anlik",
+                footerTitle: "FreshHaber-24.com",
                 authError: "An error occurred during sign-in.",
                 datePrefix: "Date:",
                 weatherPrefix: "Weather:",
@@ -1396,21 +1364,20 @@
                 linkCopied: "Link copied!",
                 share: "Share",
                 contact: "Contact",
-                Dolar: "Dollar:",
-                Euro: "Euro:",
-                Altın: "Gold:",
-                Borsa: "Stock:",
-                Bitcoin: "Bitcoin:",
+                Dolar: "Dollar",
+                Euro: "Euro",
+                Altın: "Gold",
+                Bitcoin: "Bitcoin",
                 time: "Time:"
             },
             ru: {
-                mainTitle: "e-anlik",
+                mainTitle: "FreshHaber-24.com",
                 loadingNews: "Загрузка новостей...",
                 noNews: "Новостей на этом языке пока нет.",
                 errorLoadingNews: "Произошла ошибка при загрузке новостей. Пожалуйста, попробуйте позже.",
                 footer: "&copy; 2025 Новостной сайт. Все права защищены.",
                 footerTagline: "Адрес для точных и беспристрастных новостей",
-                footerTitle: "e-anlik",
+                footerTitle: "FreshHaber-24.com",
                 authError: "Произошла ошибка при входе.",
                 datePrefix: "Дата:",
                 weatherPrefix: "Погода:",
@@ -1441,11 +1408,10 @@
                 linkCopied: "Ссылка скопирована!",
                 share: "Поделиться",
                 contact: "Контакты",
-                Dolar: "Доллар:",
-                Euro: "Евро:",
-                Altın: "Золото:",
-                Borsa: "Биржа:",
-                Bitcoin: "Биткойн:",
+                Dolar: "Доллар",
+                Euro: "Евро",
+                Altın: "Золото",
+                Bitcoin: "Биткойн",
                 time: "Время:"
             }
         };
@@ -1456,7 +1422,12 @@
             footerText.innerHTML = translations[currentLanguage].footer;
             footerTagline.textContent = translations[currentLanguage].footerTagline;
             footerTitle.textContent = translations[currentLanguage].footerTitle;
-            loadingIndicator.innerHTML = `<div class="spinner mb-4"></div><div>${translations[currentLanguage].loadingNews}</div>`;
+            
+            // Sadece ana sayfa içeriği gösteriliyorsa loading indicator ve diğer elemanları güncelle
+            if (newsListDiv && newsListDiv.parentNode === document.getElementById('main-content')) {
+                loadingIndicator.innerHTML = `<div class="spinner mb-4"></div><div>${translations[currentLanguage].loadingNews}</div>`;
+            }
+
             breakingNewsLabel.innerHTML = `<i class="fas fa-bolt mr-2"></i>${translations[currentLanguage].breakingNewsLabel}`;
             breakingNewsTextSpan.textContent = translations[currentLanguage].breakingNewsLoading;
             trendingNewsTitle.textContent = translations[currentLanguage].trendingNewsTitle;
@@ -1478,14 +1449,6 @@
             document.getElementById('category-culture').textContent = translations[currentLanguage].categoryCulture;
             document.getElementById('category-other').textContent = translations[currentLanguage].categoryOther;
 
-            // Finansal ticker etiketlerini güncelle
-            document.querySelectorAll('.ticker-label').forEach(label => {
-                const key = label.dataset.langKey;
-                if (key && translations[currentLanguage][key]) {
-                    label.textContent = translations[currentLanguage][key];
-                }
-            });
-
             // İletişim başlığını güncelle
             document.querySelector('[data-lang-key="contact"]').textContent = translations[currentLanguage].contact;
         }
@@ -1493,18 +1456,27 @@
         // Dil değiştirme fonksiyonu
         function setLanguage(lang) {
             currentLanguage = lang;
+            localStorage.setItem('currentLanguage', lang); // Dili localStorage'a kaydet
             updateUI();
             updateDateTime();
-            fetchNews();
-            fetchTrendingNews(); // Trend haberleri de dil değişince güncelle
+            // Eğer haber detay sayfası açıksa, dil değişince içeriği yeniden yükle
+            const urlParams = new URLSearchParams(window.location.search);
+            const newsIdFromUrl = urlParams.get('id');
+            if (newsIdFromUrl) {
+                // Haber detay sayfasındayken dil değişimi, header'daki dil seçeneklerini etkilememeli
+                fetchNewsDetailAndDisplay(newsIdFromUrl);
+            } else {
+                fetchNews();
+            }
+            fetchTrendingNews(); // Fetch trending news on auth state change
             updateActiveButton(lang);
-            fetchExternalData();
+            fetchExternalData(); // This will also call updateFinancialTicker
             fetchBreakingNews();
         }
 
         // Aktif dil düğmesini vurgula
         function updateActiveButton(activeLang) {
-            document.querySelectorAll('nav button').forEach(button => {
+            document.querySelectorAll('#language-options button').forEach(button => {
                 if (button.id === `lang-${activeLang}`) {
                     button.classList.add('active');
                 } else {
@@ -1537,6 +1509,174 @@
                 console.error("News site: Error fetching breaking news:", error);
                 breakingNewsTextSpan.textContent = translations[currentLanguage].breakingNewsDefault;
             });
+        }
+
+        // Haber akışını yükleyen ana fonksiyon
+        function loadNewsFeed() {
+            mainContentDiv.innerHTML = `
+                <!-- Financial Ticker -->
+                <div class="financial-ticker">
+                    <div class="ticker-container" id="financial-ticker">
+                        <div class="ticker-item">
+                            <span class="ticker-label"><i class="fas fa-dollar-sign mr-2"></i>Dolar (USD/TRY):</span>
+                            <span class="ticker-value" id="ticker-usd">--</span>
+                            <span class="ticker-change" id="ticker-usd-change">--</span>
+                        </div>
+                        <div class="ticker-item">
+                            <span class="ticker-label"><i class="fas fa-euro-sign mr-2"></i>Euro (EUR/TRY):</span>
+                            <span class="ticker-value" id="ticker-eur">--</span>
+                            <span class="ticker-change" id="ticker-eur-change">--</span>
+                        </div>
+                        <div class="ticker-item">
+                            <span class="ticker-label"><i class="fas fa-coins mr-2"></i>Altın (XAU/USD):</span>
+                            <span class="ticker-value" id="ticker-gold">--</span>
+                            <span class="ticker-change" id="ticker-gold-change">--</span>
+                        </div>
+                        <div class="ticker-item">
+                            <span class="ticker-label"><i class="fab fa-btc mr-2"></i>Bitcoin (BTC/USD):</span>
+                            <span class="ticker-value" id="ticker-btc">--</span>
+                            <span class="ticker-change" id="ticker-btc-change">--</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Breaking news bar -->
+                <div class="breaking-news">
+                    <div class="breaking-news-label-container">
+                        <span id="breaking-news-label"><i class="fas fa-bolt mr-2"></i></span>
+                    </div>
+                    <div id="breaking-content" class="breaking-content">
+                        <span id="breaking-news-text">Yükleniyor...</span>
+                    </div>
+                </div>
+
+                <!-- Haber Karuseli -->
+                <div class="news-carousel-container" id="news-carousel-container">
+                    <div class="news-carousel-inner" id="news-carousel-inner">
+                        <!-- Haberler dinamik olarak buraya yüklenecek -->
+                        <div class="news-carousel-item flex justify-center items-center">
+                            <div class="spinner mb-4"></div>
+                            <div class="text-gray-400 text-xl py-12">Haberler yükleniyor...</div>
+                        </div>
+                    </div>
+                    <button class="news-carousel-button prev" id="news-carousel-prev">&#10094;</button>
+                    <button class="news-carousel-button next" id="news-carousel-next">&#10095;</button>
+                    <div class="news-carousel-dots" id="news-carousel-dots"></div>
+                </div>
+                
+                <!-- Category Filter -->
+                <div class="category-filter" id="category-filter-buttons">
+                    <!-- Kategoriler dinamik olarak buraya yüklenecek -->
+                    <button class="category-btn active" data-category="Tümü" id="category-all"></button>
+                    <button class="category-btn" data-category="Siyaset" id="category-politics"></button>
+                    <button class="category-btn" data-category="Ekonomi" id="category-economy"></button>
+                    <button class="category-btn" data-category="Spor" id="category-sports"></button>
+                    <button class="category-btn" data-category="Teknoloji" id="category-technology"></button>
+                    <button class="category-btn" data-category="Sağlık" id="category-health"></button>
+                    <button class="category-btn" data-category="Kültür" id="category-culture"></button>
+                    <button class="category-btn" data-category="Diğer" id="category-other"></button>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2">
+                        <section id="news-list" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div id="loading-indicator" class="col-span-full text-center text-gray-400 text-xl py-12">
+                                <div class="spinner mb-4"></div>
+                                <div>Haberler yükleniyor...</div>
+                            </div>
+                        </section>
+                    </div>
+                    
+                    <div class="lg:col-span-1">
+                        <!-- Weather widget -->
+                        <div class="weather-widget">
+                            <div class="weather-icon">
+                                <i class="fas fa-sun"></i>
+                            </div>
+                            <div class="flex-grow">
+                                <div class="font-bold text-xl" id="weather-city">İstanbul</div>
+                                <div class="text-gray-400" id="weather-description">24°C | Güneşli</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="font-semibold" id="weather-humidity">Nem: %42</div>
+                                <div class="text-gray-400" id="weather-wind">Rüzgar: 8 km/s</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Trending News -->
+                        <div class="trending-news">
+                            <h3 class="text-xl font-bold mb-4 flex items-center">
+                                <i class="fas fa-fire mr-3 text-orange-500"></i>
+                                <span class="gradient-text" id="trending-news-title">Trend Haberler</span>
+                            </h3>
+                            <div class="trending-list" id="trending-news-list">
+                                <!-- Trend haberler dinamik olarak buraya yüklenecek -->
+                                <div id="trending-loading-indicator" class="text-center text-gray-400 text-sm py-4">
+                                    <div class="spinner w-8 h-8 mb-2"></div>
+                                    <div>Trend haberler yükleniyor...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            // Yeniden oluşturulan elementlerin referanslarını güncelle
+            newsListDiv = document.getElementById('news-list');
+            loadingIndicator = document.getElementById('loading-indicator');
+            // mainTitle bu kapsamda yeniden oluşturulmuyor, referansı değişmez
+            footerText = document.getElementById('footer-text');
+            footerTagline = document.getElementById('footer-tagline');
+            footerTitle = document.getElementById('footer-title');
+            currentDateTimeSpan = document.getElementById('current-date-time');
+            weatherInfoSpan = document.getElementById('weather-info');
+            breakingNewsLabel = document.getElementById('breaking-news-label');
+            breakingNewsTextSpan = document.getElementById('breaking-news-text');
+            trendingNewsListDiv = document.getElementById('trending-news-list');
+            trendingLoadingIndicator = document.getElementById('trending-loading-indicator');
+            trendingNewsTitle = document.getElementById('trending-news-title');
+            weatherCitySpan = document.getElementById('weather-city');
+            weatherDescriptionSpan = document.getElementById('weather-description');
+            weatherHumiditySpan = document.getElementById('weather-humidity');
+            weatherWindSpan = document.getElementById('weather-wind');
+            tickerUsd = document.getElementById('ticker-usd');
+            tickerUsdChange = document.getElementById('ticker-usd-change');
+            tickerEur = document.getElementById('ticker-eur');
+            tickerEurChange = document.getElementById('ticker-eur-change');
+            tickerGold = document.getElementById('ticker-gold');
+            tickerGoldChange = document.getElementById('ticker-gold-change');
+            tickerBtc = document.getElementById('ticker-btc'); // FIX: Corrected this line
+            tickerBtcChange = document.getElementById('ticker-btc-change');
+            tickerUsdLabel = document.querySelector('#financial-ticker .ticker-item:nth-child(1) .ticker-label');
+            tickerEurLabel = document.querySelector('#financial-ticker .ticker-item:nth-child(2) .ticker-label');
+            tickerGoldLabel = document.querySelector('#financial-ticker .ticker-item:nth-child(3) .ticker-label');
+            tickerBtcLabel = document.querySelector('#financial-ticker .ticker-item:nth-child(4) .ticker-label');
+            newsCarouselContainer = document.getElementById('news-carousel-container');
+            newsCarouselInner = document.getElementById('news-carousel-inner');
+            newsCarouselPrevButton = document.getElementById('news-carousel-prev');
+            newsCarouselNextButton = document.getElementById('news-carousel-next');
+            newsCarouselDotsContainer = document.getElementById('news-carousel-dots');
+
+            // Dil seçeneklerini tekrar görünür yap
+            if (languageOptionsNav) {
+                languageOptionsNav.style.display = 'flex';
+            }
+
+
+            // Kategori düğmelerine olay dinleyicisi ekle
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentCategory = this.dataset.category; // Update current category
+                    fetchNews(); // Re-fetch news based on new category
+                });
+            });
+
+            // Firebase ve API çağrılarını tetikle
+            fetchNews();
+            fetchBreakingNews();
+            fetchTrendingNews();
+            fetchExternalData();
         }
 
         // Firestore'dan haberleri al ve göster
@@ -1630,7 +1770,7 @@
                     dot.dataset.index = index;
                     newsCarouselDotsContainer.appendChild(dot);
 
-                    carouselItemDiv.addEventListener('click', () => showNewsDetailModal(newsItem.id));
+                    carouselItemDiv.addEventListener('click', () => openNewsDetailPage(newsItem.id));
                 });
 
                 totalNewsSlides = filteredNews.length;
@@ -1679,7 +1819,7 @@
                     newsListDiv.appendChild(newsCardDiv);
 
                     // Haber kartına tıklama olay dinleyicisi ekle
-                    newsCardDiv.addEventListener('click', () => showNewsDetailModal(newsItem.id));
+                    newsCardDiv.addEventListener('click', () => openNewsDetailPage(newsItem.id));
                 });
             }, (error) => {
                 console.error("News site: Error fetching news:", error);
@@ -1780,8 +1920,8 @@
                     `;
                     trendingNewsListDiv.appendChild(trendingItemDiv);
 
-                    // Add click listener to show modal
-                    trendingItemDiv.addEventListener('click', () => showNewsDetailModal(newsItem.id));
+                    // Add click listener to open news detail in new tab
+                    trendingItemDiv.addEventListener('click', () => openNewsDetailPage(newsItem.id));
                 });
             }, (error) => {
                 console.error("News site: Error fetching trending news:", error);
@@ -1798,69 +1938,178 @@
             currentDateTimeSpan.innerHTML = `<i class="far fa-calendar-alt mr-2"></i> ${translations[currentLanguage].datePrefix} ${now.toLocaleDateString(currentLanguage, dateOptions)} <i class="far fa-clock ml-3 mr-2"></i> ${translations[currentLanguage].time} ${now.toLocaleTimeString(currentLanguage, timeOptions)}`;
         }
 
-        // Finansal verileri güncelle
-        function updateFinancialTicker() {
-            // Bu fonksiyon gerçek API'lerle değiştirilebilir
-            // Şu an için simüle edilmiş veriler kullanılıyor
+        // Previous rates to calculate change
+        let prevUsdRate = 0;
+        let prevEurRate = 0;
+        let prevBtcPrice = 0; 
+        let prevGoldPrice = 0;
+
+        // Simulated data if API fails
+        function simulateFinancialData() {
+            const generateRandomChange = () => (Math.random() * 0.5 - 0.25); // -0.25% to +0.25%
+            const generateRandomValue = (base, change) => base * (1 + change / 100);
+
+            // Simulate USD/TRY
+            const simulatedUsdChange = generateRandomChange();
+            const simulatedUsd = generateRandomValue(prevUsdRate || 41.50, simulatedUsdChange); // Use previous rate as base or a default
+            tickerUsd.textContent = simulatedUsd.toFixed(2);
+            tickerUsdChange.innerHTML = simulatedUsdChange > 0
+                ? `<span class="ticker-arrow">↑</span> %${Math.abs(simulatedUsdChange).toFixed(4)}` // Decimal places increased
+                : `<span class="ticker-arrow">↓</span> %${Math.abs(simulatedUsdChange).toFixed(4)}`; // Decimal places increased
+            tickerUsdChange.className = `ticker-change ${simulatedUsdChange > 0 ? 'change-up' : 'change-down'}`;
+            prevUsdRate = simulatedUsd; // Update for next simulation
             
-            // Simüle edilmiş finansal veriler
-            const financialData = {
-                usd: {
-                    value: (40.58 + Math.random() * 0.1).toFixed(2),
-                    change: (Math.random() * 0.1 - 0.05).toFixed(2),
-                },
-                eur: {
-                    value: (46.65 + Math.random() * 0.1).toFixed(2),
-                    change: (Math.random() * 0.1 - 0.05).toFixed(2),
-                },
-                gold: {
-                    value: (4306 + Math.random() * 10).toFixed(0),
-                    change: (Math.random() * 0.5 - 0.25).toFixed(2),
-                },
-                stock: {
-                    value: (10619 + Math.random() * 50).toFixed(0),
-                    change: (Math.random() * 0.5 - 0.25).toFixed(2),
-                },
-                btc: {
-                    value: (117804 + Math.random() * 1000).toFixed(0),
-                    change: (Math.random() * 0.5 - 0.25).toFixed(2),
+            // Simulate EUR/TRY
+            const simulatedEurChange = generateRandomChange();
+            const simulatedEur = generateRandomValue(prevEurRate || 48.00, simulatedEurChange); // Use previous rate as base or a default
+            tickerEur.textContent = simulatedEur.toFixed(2);
+            tickerEurChange.innerHTML = simulatedEurChange > 0
+                ? `<span class="ticker-arrow">↑</span> %${Math.abs(simulatedEurChange).toFixed(4)}` // Decimal places increased
+                : `<span class="ticker-arrow">↓</span> %${Math.abs(simulatedEurChange).toFixed(4)}`; // Decimal places increased
+            tickerEurChange.className = `ticker-change ${simulatedEurChange > 0 ? 'change-up' : 'change-down'}`;
+            prevEurRate = simulatedEur; // Update for next simulation
+
+            // Simulate Gold (XAU/USD)
+            const simulatedGoldChange = generateRandomChange();
+            const simulatedGold = generateRandomValue(prevGoldPrice || 3500.00, simulatedGoldChange); // Use previous price as base or a default
+            tickerGold.textContent = simulatedGold.toFixed(2);
+            tickerGoldChange.innerHTML = simulatedGoldChange > 0
+                ? `<span class="ticker-arrow">↑</span> %${Math.abs(simulatedGoldChange).toFixed(4)}` // Decimal places increased
+                : `<span class="ticker-arrow">↓</span> %${Math.abs(simulatedGoldChange).toFixed(4)}`; // Decimal places increased
+            tickerGoldChange.className = `ticker-change ${simulatedGoldChange > 0 ? 'change-up' : 'change-down'}`;
+            prevGoldPrice = simulatedGold; // Update for next simulation
+
+            // Simulate Bitcoin (BTC/USD)
+            const simulatedBtcChange = generateRandomChange() * 10; // Bitcoin can have larger changes
+            const simulatedBtc = generateRandomValue(prevBtcPrice || 120000.00, simulatedBtcChange); // Use previous price as base or a default
+            tickerBtc.textContent = simulatedBtc.toFixed(2);
+            tickerBtcChange.innerHTML = simulatedBtcChange > 0
+                ? `<span class="ticker-arrow">↑</span> %${Math.abs(simulatedBtcChange).toFixed(4)}` // Decimal places increased
+                : `<span class="ticker-arrow">↓</span> %${Math.abs(simulatedBtcChange).toFixed(4)}`; // Decimal places increased
+            tickerBtcChange.className = `ticker-change ${simulatedBtcChange > 0 ? 'change-up' : 'change-down'}`;
+            prevBtcPrice = simulatedBtc; // Update for next simulation
+        }
+
+        // Finansal verileri güncelle - Gerçek API'lerle değiştirilmiş versiyon
+        async function updateFinancialTicker() {
+            // Update financial ticker labels based on current language
+            tickerUsdLabel.innerHTML = `<i class="fas fa-dollar-sign mr-2"></i>${translations[currentLanguage].Dolar} (USD/TRY):`;
+            tickerEurLabel.innerHTML = `<i class="fas fa-euro-sign mr-2"></i>${translations[currentLanguage].Euro} (EUR/TRY):`;
+            tickerGoldLabel.innerHTML = `<i class="fas fa-coins mr-2"></i>${translations[currentLanguage].Altın} (XAU/USD):`;
+            tickerBtcLabel.innerHTML = `<i class="fab fa-btc mr-2"></i>${translations[currentLanguage].Bitcoin} (BTC/USD):`;
+
+            try {
+                // USD/TRY ve EUR/TRY için ExchangeRate-API
+                const exchangeRateApiKey = 'dc7302c6c96bc9e2979f0f8a';
+                const exchangeRateUrl = `https://v6.exchangerate-api.com/v6/${exchangeRateApiKey}/latest/USD`;
+                
+                // Bitcoin (BTC) ve Gold (PAXG) için CoinGecko API
+                const coingeckoUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,pax-gold&vs_currencies=usd';
+                
+                // Paralel olarak tüm istekleri gönder
+                const [exchangeRateResponse, coingeckoResponse] = await Promise.all([
+                    fetch(exchangeRateUrl),
+                    fetch(coingeckoUrl)
+                ]);
+
+                // ExchangeRate-API işleme
+                if (exchangeRateResponse.ok) {
+                    const exchangeRateData = await exchangeRateResponse.json();
+                    const currentUsdRate = parseFloat(exchangeRateData.conversion_rates.TRY);
+                    
+                    // EUR/TRY: (USD/TRY) / (USD/EUR)
+                    const currentEurRate = currentUsdRate / exchangeRateData.conversion_rates.EUR;
+                    
+                    // USD güncelleme
+                    tickerUsd.textContent = currentUsdRate.toFixed(2);
+                    if (prevUsdRate !== 0) {
+                        const usdChange = ((currentUsdRate - prevUsdRate) / prevUsdRate) * 100;
+                        tickerUsdChange.innerHTML = usdChange > 0 
+                            ? `<span class="ticker-arrow">↑</span> %${Math.abs(usdChange).toFixed(4)}` // Decimal places increased
+                            : `<span class="ticker-arrow">↓</span> %${Math.abs(usdChange).toFixed(4)}`; // Decimal places increased
+                        tickerUsdChange.className = `ticker-change ${usdChange > 0 ? 'change-up' : 'change-down'}`;
+                    } else {
+                        // İlk çekimde değişim gösterme, sadece değeri ayarla
+                        tickerUsdChange.innerHTML = '--'; 
+                        tickerUsdChange.className = 'ticker-change';
+                    }
+                    prevUsdRate = currentUsdRate; // Sonraki karşılaştırma için kaydet
+                    
+                    // EUR güncelleme
+                    tickerEur.textContent = currentEurRate.toFixed(2);
+                    if (prevEurRate !== 0) {
+                        const eurChange = ((currentEurRate - prevEurRate) / prevEurRate) * 100;
+                        tickerEurChange.innerHTML = eurChange > 0 
+                            ? `<span class="ticker-arrow">↑</span> %${Math.abs(eurChange).toFixed(4)}` // Decimal places increased
+                            : `<span class="ticker-arrow">↓</span> %${Math.abs(eurChange).toFixed(4)}`; // Decimal places increased
+                        tickerEurChange.className = `ticker-change ${eurChange > 0 ? 'change-up' : 'change-down'}`;
+                    } else {
+                        // İlk çekimde değişim gösterme, sadece değeri ayarla
+                        tickerEurChange.innerHTML = '--';
+                        tickerEurChange.className = 'ticker-change';
+                    }
+                    prevEurRate = currentEurRate; // Sonraki karşılaştırma için kaydet
+
+                } else {
+                    throw new Error(`ExchangeRate-API error: ${exchangeRateResponse.status}`);
                 }
-            };
 
-            // USD
-            tickerUsd.textContent = financialData.usd.value;
-            tickerUsdChange.innerHTML = financialData.usd.change > 0 
-                ? `<span class="ticker-arrow">↑</span> %${Math.abs(financialData.usd.change)}`
-                : `<span class="ticker-arrow">↓</span> %${Math.abs(financialData.usd.change)}`;
-            tickerUsdChange.className = `ticker-change ${financialData.usd.change > 0 ? 'change-up' : 'change-down'}`;
+                // CoinGecko API işleme (Altın ve Bitcoin)
+                if (coingeckoResponse.ok) {
+                    const coingeckoData = await coingeckoResponse.json();
+                    
+                    const currentBtcPrice = coingeckoData.bitcoin ? parseFloat(coingeckoData.bitcoin.usd) : NaN;
+                    const currentGoldPrice = coingeckoData['pax-gold'] ? parseFloat(coingeckoData['pax-gold'].usd) : NaN;
+                    
+                    // Bitcoin'i güncelle
+                    if (!isNaN(currentBtcPrice)) {
+                        tickerBtc.textContent = currentBtcPrice.toFixed(2);
+                        if (prevBtcPrice !== 0) {
+                            const btcChange = ((currentBtcPrice - prevBtcPrice) / prevBtcPrice) * 100;
+                            tickerBtcChange.innerHTML = btcChange > 0 
+                                ? `<span class="ticker-arrow">↑</span> %${Math.abs(btcChange).toFixed(4)}` // Decimal places increased
+                                : `<span class="ticker-arrow">↓</span> %${Math.abs(btcChange).toFixed(4)}`; // Decimal places increased
+                            tickerBtcChange.className = `ticker-change ${btcChange > 0 ? 'change-up' : 'change-down'}`;
+                        } else {
+                            tickerBtcChange.innerHTML = '--';
+                            tickerBtcChange.className = 'ticker-change';
+                        }
+                        prevBtcPrice = currentBtcPrice;
+                    } else {
+                        tickerBtc.textContent = '--';
+                        tickerBtcChange.innerHTML = '--';
+                        tickerBtcChange.className = 'ticker-change';
+                    }
 
-            // EUR
-            tickerEur.textContent = financialData.eur.value;
-            tickerEurChange.innerHTML = financialData.eur.change > 0 
-                ? `<span class="ticker-arrow">↑</span> %${Math.abs(financialData.eur.change)}`
-                : `<span class="ticker-arrow">↓</span> %${Math.abs(financialData.eur.change)}`;
-            tickerEurChange.className = `ticker-change ${financialData.eur.change > 0 ? 'change-up' : 'change-down'}`;
+                    // Altın'ı güncelle
+                    if (!isNaN(currentGoldPrice)) {
+                        tickerGold.textContent = currentGoldPrice.toFixed(2);
+                        if (prevGoldPrice !== 0) {
+                            const goldChange = ((currentGoldPrice - prevGoldPrice) / prevGoldPrice) * 100;
+                            tickerGoldChange.innerHTML = goldChange > 0 
+                                ? `<span class="ticker-arrow">↑</span> %${Math.abs(goldChange).toFixed(4)}` // Decimal places increased
+                                : `<span class="ticker-arrow">↓</span> %${Math.abs(goldChange).toFixed(4)}`; // Decimal places increased
+                            tickerGoldChange.className = `ticker-change ${goldChange > 0 ? 'change-up' : 'change-down'}`;
+                        } else {
+                            tickerGoldChange.innerHTML = '--';
+                            tickerGoldChange.className = 'ticker-change';
+                        }
+                        prevGoldPrice = currentGoldPrice;
+                    } else {
+                        tickerGold.textContent = '--';
+                        tickerGoldChange.innerHTML = '--';
+                        tickerGoldChange.className = 'ticker-change';
+                    }
 
-            // Altın
-            tickerGold.textContent = financialData.gold.value;
-            tickerGoldChange.innerHTML = financialData.gold.change > 0 
-                ? `<span class="ticker-arrow">↑</span> %${Math.abs(financialData.gold.change)}`
-                : `<span class="ticker-arrow">↓</span> %${Math.abs(financialData.gold.change)}`;
-            tickerGoldChange.className = `ticker-change ${financialData.gold.change > 0 ? 'change-up' : 'change-down'}`;
+                } else {
+                    throw new Error(`CoinGecko API error: ${coingeckoResponse.status}`);
+                }
 
-            // Borsa
-            tickerStock.textContent = financialData.stock.value;
-            tickerStockChange.innerHTML = financialData.stock.change > 0 
-                ? `<span class="ticker-arrow">↑</span> %${Math.abs(financialData.stock.change)}`
-                : `<span class="ticker-arrow">↓</span> %${Math.abs(financialData.stock.change)}`;
-            tickerStockChange.className = `ticker-change ${financialData.stock.change > 0 ? 'change-up' : 'change-down'}`;
-
-            // Bitcoin
-            tickerBtc.textContent = financialData.btc.value;
-            tickerBtcChange.innerHTML = financialData.btc.change > 0 
-                ? `<span class="ticker-arrow">↑</span> %${Math.abs(financialData.btc.change)}`
-                : `<span class="ticker-arrow">↓</span> %${Math.abs(financialData.btc.change)}`;
-            tickerBtcChange.className = `ticker-change ${financialData.btc.change > 0 ? 'change-up' : 'change-down'}`;
+            } catch (error) {
+                console.error("Finansal veriler alınırken hata:", error);
+                // API'den veri alınamazsa, simüle edilmiş verileri göster
+                simulateFinancialData();
+            }
         }
 
         // Hava durumu ve döviz kurlarını al (Hava durumu API'den, döviz API'den)
@@ -1871,6 +2120,7 @@
 
             if (!weatherApiKey || weatherApiKey === 'YOUR_OPENWEATHERMAP_API_KEY') {
                 weatherInfoSpan.innerHTML = `<i class="fas fa-exclamation-circle mr-2"></i> ${translations[currentLanguage].weatherPrefix} ${translations[currentLanguage].weatherApiKeyMissing}`;
+                weatherCitySpan.textContent = translations[currentLanguage].cityIstanbul;
                 weatherDescriptionSpan.textContent = translations[currentLanguage].weatherInfoNotAvailable;
                 weatherHumiditySpan.textContent = `${translations[currentLanguage].humidity} ${translations[currentLanguage].weatherInfoNotAvailable}`;
                 weatherWindSpan.textContent = `${translations[currentLanguage].wind} ${translations[currentLanguage].weatherInfoNotAvailable}`;
@@ -1910,113 +2160,118 @@
             updateFinancialTicker();
         }
 
-        // Fonksiyon: Modalda haber detayını karusel ile göster
-        async function showNewsDetailModal(newsId) {
-            newsDetailModal.style.display = 'flex';
-            setTimeout(() => {
-                newsDetailModal.classList.add('show');
-            }, 10);
-            
-            modalContentInnerDiv.innerHTML = '';
-            modalContentInnerDiv.appendChild(modalLoadingIndicator);
-            modalLoadingIndicator.style.display = 'block';
-
-            try {
-                const newsDocRef = doc(db, `artifacts/${appId}/public/data/news`, newsId);
-                const newsDocSnap = await getDoc(newsDocRef);
-
-                modalLoadingIndicator.style.display = 'none';
-
-                if (newsDocSnap.exists()) {
-                    const newsItem = newsDocSnap.data();
-
-                    let mediaCarouselHtml = '';
-                    if (newsItem.mediaUrls && newsItem.mediaUrls.length > 0) {
-                        mediaCarouselHtml = `
-                            <div class="carousel-container">
-                                <div class="carousel-inner" id="carousel-inner">
-                                    ${newsItem.mediaUrls.map(url => {
-                                        const fileExtension = url.split('.').pop().toLowerCase();
-                                        if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
-                                            return `<div class="carousel-item"><img src="${url}" alt="Media"></div>`;
-                                        } else if (['mp4', 'webm', 'ogg'].includes(fileExtension)) {
-                                            return `<div class="carousel-item"><video controls src="${url}"></video>`;
-                                        } else {
-                                            return `<div class="carousel-item"><a href="${url}" target="_blank" class="text-blue-400 hover:underline">${translations[currentLanguage].downloadFile || 'Download File'}</a></div>`;
-                                        }
-                                    }).join('')}
-                                </div>
-                                ${newsItem.mediaUrls.length > 1 ? `<button class="carousel-button prev" id="carousel-prev">&#10094;</button>
-                                <button class="carousel-button next" id="carousel-next">&#10095;</button>` : ''}
-                                <div class="carousel-dots" id="carousel-dots">
-                                    ${newsItem.mediaUrls.map((_, index) => `<span class="dot" data-index="${index}"></span>`).join('')}
-                                </div>
-                            </div>
-                        `;
-                    }
-
-                    modalContentInnerDiv.innerHTML = `
-                        <h2 class="modal-news-title">${newsItem.title}</h2>
-                        ${mediaCarouselHtml}
-                        <div class="divider"></div>
-                        <p class="modal-news-content">${newsItem.content}</p>
-                        
-                        <div class="flex justify-between items-center mt-8">
-                            <div class="text-sm text-gray-500 flex gap-4">
-                                <span class="flex items-center"><i class="far fa-calendar-alt mr-2"></i> ${new Date(newsItem.timestamp.toDate()).toLocaleDateString(currentLanguage, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                                <span class="flex items-center"><i class="far fa-clock mr-2"></i> ${new Date(newsItem.timestamp.toDate()).toLocaleTimeString(currentLanguage, { hour: '2-digit', minute: '2-digit' })}</span>
-                                <span class="flex items-center"><i class="fas fa-globe mr-2"></i> ${translations[currentLanguage].language} ${newsItem.language.toUpperCase()}</span>
-                                <span class="flex items-center"><i class="fas fa-tag mr-2"></i> ${newsItem.category || 'Genel'}</span>
-                            </div>
-                            <div class="news-share">
-                                <button class="share-btn" data-share-type="facebook"><i class="fab fa-facebook-f"></i></button>
-                                <button class="share-btn" data-share-type="twitter"><i class="fab fa-twitter"></i></button>
-                                <button class="share-btn" data-share-type="linkedin"><i class="fab fa-linkedin-in"></i></button>
-                                <button class="share-btn" data-share-type="copy-link" title="${translations[currentLanguage].copyLink}"><i class="fas fa-link"></i></button>
-                                <button class="share-btn" data-share-type="native-share" title="${translations[currentLanguage].share}"><i class="fas fa-share-alt"></i></button>
-                            </div>
-                        </div>
-                    `;
-
-                    // Medya varsa karuseli başlat
-                    if (newsItem.mediaUrls && newsItem.mediaUrls.length > 0) {
-                        initCarousel(newsItem.mediaUrls.length);
-                    }
-
-                    // Paylaşım düğmelerine olay dinleyicileri ekle
-                    document.querySelectorAll('.news-share .share-btn').forEach(button => {
-                        button.addEventListener('click', (event) => {
-                            const shareType = event.currentTarget.dataset.shareType;
-                            const newsTitle = newsItem.title;
-                            // Haber detay modalı açıldığında URL'yi dinamik olarak oluştur
-                            // Bu URL, haberin benzersiz kimliğini içerebilir
-                            const newsUrl = `${window.location.origin}?newsId=${newsItem.id}`; 
-
-                            handleShare(shareType, newsTitle, newsUrl);
-                        });
-                    });
-
-                } else {
-                    modalContentInnerDiv.innerHTML = `<div class="text-center text-red-400 text-xl py-12">${translations[currentLanguage].newsNotFound}</div>`;
-                }
-            } catch (error) {
-                console.error("Error fetching news detail:", error);
-                modalContentInnerDiv.innerHTML = `<div class="text-center text-red-400 text-xl py-12">An error occurred while loading news details.</div>`;
+        // Handlebars.js gibi basit bir şablon motoru (news-detail-template için)
+        function renderTemplate(templateId, data) {
+            const templateScript = document.getElementById(templateId);
+            if (!templateScript) {
+                console.error(`Template with ID "${templateId}" not found.`);
+                return '';
             }
+            let template = templateScript.innerHTML;
+
+            // Simple {{key}} replacement
+            for (const key in data) {
+                if (typeof data[key] === 'string' || typeof data[key] === 'number') {
+                    template = template.replace(new RegExp(`{{${key}}}`, 'g'), data[key]);
+                }
+            }
+
+            // #if hasMultipleMedia
+            if (data.hasMultipleMedia) {
+                template = template.replace(/{{#if hasMultipleMedia}}([\s\S]*?){{\/if}}/g, '$1');
+            } else {
+                template = template.replace(/{{#if hasMultipleMedia}}([\s\S]*?){{\/if}}/g, '');
+            }
+
+            return template;
         }
+
+
+        // Fonksiyon: Haber detay sayfasını aç (artık aynı sayfada)
+        async function openNewsDetailPage(newsId) {
+            // Ana içeriği temizle
+            mainContentDiv.innerHTML = `<div class="text-center text-gray-400 text-xl py-12"><div class="spinner mb-4"></div><div>${translations[currentLanguage].loadingNews}</div></div>`;
+
+            // URL'ye newsId ve lang parametrelerini ekleyerek geçmişi güncelle
+            const newUrl = `${window.location.origin}${window.location.pathname}?id=${newsId}&lang=${currentLanguage}`;
+            window.history.pushState({ newsId: newsId, lang: currentLanguage }, '', newUrl);
+
+            // Dil seçenekleri navigasyonunu gizle
+            if (languageOptionsNav) {
+                languageOptionsNav.style.display = 'none';
+            }
+
+            await fetchNewsDetailAndDisplay(newsId);
+        }
+        
+        // Yeni bir haber detay sayfası oluşturma fonksiyonu (ana sayfada değil, ayrı bir HTML sayfası olarak düşünülmeli)
+        function createNewsDetailPageContent(newsItem, langTranslations) {
+            const formattedDate = newsItem.timestamp ? new Date(newsItem.timestamp.toDate()).toLocaleDateString(currentLanguage, { year: 'numeric', month: 'long', day: 'numeric' }) : langTranslations.weatherInfoNotAvailable;
+            const formattedTime = newsItem.timestamp ? new Date(newsItem.timestamp.toDate()).toLocaleTimeString(currentLanguage, { hour: '2-digit', minute: '2-digit' }) : '';
+
+            const data = {
+                title: newsItem.title,
+                content: newsItem.content,
+                mediaUrls: newsItem.mediaUrls ? newsItem.mediaUrls.map(url => {
+                    const fileExtension = url.split('.').pop().toLowerCase();
+                    return {
+                        url: url,
+                        isImage: ['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension),
+                        isVideo: ['mp4', 'webm', 'ogg'].includes(fileExtension)
+                    };
+                }) : [],
+                hasMultipleMedia: newsItem.mediaUrls && newsItem.mediaUrls.length > 1,
+                formattedDate: formattedDate,
+                formattedTime: formattedTime,
+                language: newsItem.language.toUpperCase(),
+                category: newsItem.category || 'Genel', // Kategori verisi burada tutuluyor ancak şablonda kullanılmayacak
+                translations: langTranslations // Pass translations object to template
+            };
+
+            const renderedHtml = renderTemplate('news-detail-template', data);
+            
+            // Rendered HTML'i bir div içine yerleştirin
+            const container = document.createElement('div');
+            container.innerHTML = renderedHtml;
+
+            // Medya karuselinin içeriğini ve noktalarını dinamik olarak doldur
+            const carouselInner = container.querySelector('#carousel-inner');
+            const carouselDots = container.querySelector('#carousel-dots');
+
+            if (carouselInner && carouselDots && data.mediaUrls && data.mediaUrls.length > 0) {
+                carouselInner.innerHTML = ''; // Mevcut içeriği temizle
+                carouselDots.innerHTML = ''; // Mevcut noktaları temizle
+
+                data.mediaUrls.forEach((mediaItem, index) => {
+                    let itemHtml = '';
+                    if (mediaItem.isImage) {
+                        itemHtml = `<img src="${mediaItem.url}" alt="Media">`;
+                    } else if (mediaItem.isVideo) {
+                        itemHtml = `<video controls src="${mediaItem.url}"></video>`;
+                    } else {
+                        itemHtml = `<a href="${mediaItem.url}" target="_blank" class="text-blue-400 hover:underline">${langTranslations.downloadFile}</a>`;
+                    }
+                    const carouselItemDiv = document.createElement('div');
+                    carouselItemDiv.className = 'carousel-item';
+                    carouselItemDiv.dataset.index = index;
+                    carouselItemDiv.innerHTML = itemHtml;
+                    carouselInner.appendChild(carouselItemDiv);
+
+                    const dot = document.createElement('span');
+                    dot.className = 'dot';
+                    dot.dataset.index = index;
+                    carouselDots.appendChild(dot);
+                });
+            }
+
+
+            return container;
+        }
+
 
         // Paylaşım işlevselliği
         function handleShare(type, title, url) {
             switch (type) {
-                case 'facebook':
-                    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
-                    break;
-                case 'twitter':
-                    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`, '_blank');
-                    break;
-                case 'linkedin':
-                    window.open(`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`, '_blank');
-                    break;
                 case 'copy-link':
                     // Use document.execCommand('copy') for clipboard operations in iframes
                     const tempInput = document.createElement('textarea');
@@ -2059,7 +2314,7 @@
             }, 3000); // 3 saniye sonra kaybolur
         }
 
-        // Karusel mantığı
+        // Karusel mantığı (haber detay sayfası için)
         let currentSlide = 0;
         let totalSlides = 0;
 
@@ -2085,7 +2340,7 @@
                 });
             }
 
-            document.querySelectorAll('.dot').forEach(dot => {
+            document.querySelectorAll('#carousel-dots .dot').forEach(dot => {
                 dot.addEventListener('click', (e) => {
                     currentSlide = parseInt(e.target.dataset.index);
                     updateCarousel();
@@ -2098,7 +2353,7 @@
             if (carouselInner) {
                 carouselInner.style.transform = `translateX(-${currentSlide * 100}%)`;
             }
-            document.querySelectorAll('.dot').forEach((dot, index) => {
+            document.querySelectorAll('#carousel-dots .dot').forEach((dot, index) => {
                 if (index === currentSlide) {
                     dot.classList.add('active');
                 } else {
@@ -2107,33 +2362,27 @@
             });
         }
 
-        // Fonksiyon: Modalı kapat
-        function closeNewsDetailModal() {
-            newsDetailModal.classList.remove('show');
-            setTimeout(() => {
-                newsDetailModal.style.display = 'none';
-                modalContentInnerDiv.innerHTML = '';
-            }, 300);
-        }
-
-        // Modal kapat düğmesine olay dinleyicisi ekle
-        closeModalButton.addEventListener('click', closeNewsDetailModal);
-
-        // Modal içeriğinin dışına tıklandığında modali kapat
-        newsDetailModal.addEventListener('click', (e) => {
-            if (e.target === newsDetailModal) {
-                closeNewsDetailModal();
-            }
-        });
-
         // Kimlik doğrulama durumu değiştiğinde
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 userId = user.uid;
                 console.log("News site: User ID:", userId);
-                fetchNews();
-                fetchBreakingNews();
-                fetchTrendingNews(); // Fetch trending news on auth state change
+                // URL'de haber ID'si varsa detay sayfasını yükle, yoksa ana akışı yükle
+                const urlParams = new URLSearchParams(window.location.search);
+                const newsIdFromUrl = urlParams.get('id');
+                if (newsIdFromUrl) {
+                    // Dil seçeneklerini gizle
+                    if (languageOptionsNav) {
+                        languageOptionsNav.style.display = 'none';
+                    }
+                    fetchNewsDetailAndDisplay(newsIdFromUrl);
+                } else {
+                    // Dil seçeneklerini göster
+                    if (languageOptionsNav) {
+                        languageOptionsNav.style.display = 'flex';
+                    }
+                    loadNewsFeed();
+                }
             } else {
                 try {
                     if (initialAuthToken) {
@@ -2143,7 +2392,7 @@
                     }
                 } catch (error) {
                     console.error("News site: Anonymous sign-in error:", error);
-                    newsListDiv.innerHTML = `<div class="col-span-full text-center text-red-400 text-xl py-12">${translations[currentLanguage].authError}</div>`;
+                    mainContentDiv.innerHTML = `<div class="col-span-full text-center text-red-400 text-xl py-12">${translations[currentLanguage].authError}</div>`;
                 }
             }
         });
@@ -2152,16 +2401,6 @@
         document.getElementById('lang-tr').addEventListener('click', () => setLanguage('tr'));
         document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
         document.getElementById('lang-ru').addEventListener('click', () => setLanguage('ru'));
-
-        // Kategori düğmelerine olay dinleyicisi ekle
-        document.querySelectorAll('.category-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                currentCategory = this.dataset.category; // Update current category
-                fetchNews(); // Re-fetch news based on new category
-            });
-        });
 
         // Dark mode toggle
         darkModeToggle.addEventListener('click', function() {
@@ -2175,20 +2414,55 @@
             currentBackgroundImageIndex = (currentBackgroundImageIndex + 1) % backgroundImages.length;
         }
 
-        // Sayfa yüklendiğinde varsayılan dili ayarla ve verileri getir
+        // Sayfa yüklendiğinde
         document.addEventListener('DOMContentLoaded', () => {
             updateActiveButton(currentLanguage);
             updateUI();
             updateDateTime();
-            fetchExternalData();
+            
             setInterval(fetchExternalData, 300000); // Fetch external data every 5 minutes
+            // --- BEGIN: Added by assistant: make 'FreshHaber-24.com' clickable to go home on any page ---
+            function goHome() {
+                try {
+                    // Remove any query parameters (news id / lang) and push a clean URL
+                    const cleanUrl = window.location.pathname;
+                    history.pushState({}, '', cleanUrl);
+                } catch (e) {
+                    console.warn('Could not update history state for goHome:', e);
+                }
+                // Ensure language options are visible on the main page
+                if (languageOptionsNav) languageOptionsNav.style.display = 'flex';
+                // Load the news feed (main page)
+                try { loadNewsFeed(); } catch (err) { console.error('goHome: loadNewsFeed error', err); }
+                // Update UI texts / date/time / external data
+                updateUI();
+                updateDateTime();
+                try { fetchExternalData(); } catch (err) { /* non-fatal */ }
+                // Scroll to top for a smooth UX
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // Attach click listeners to any element that shows the site title 'FreshHaber-24.com'
+            const mainTitleClickable = document.getElementById('main-title');
+            const footerTitleClickable = document.getElementById('footer-title');
+            if (mainTitleClickable) {
+                mainTitleClickable.style.cursor = 'pointer';
+                mainTitleClickable.addEventListener('click', goHome);
+            }
+            if (footerTitleClickable) {
+                footerTitleClickable.style.cursor = 'pointer';
+                footerTitleClickable.addEventListener('click', goHome);
+            }
+            // --- END: Added by assistant ---
+
+            setInterval(updateFinancialTicker, 60000); // Finansal verileri her 1 dakikada bir güncelle
 
             // Initial background image set
             changeBackground();
             // Change background image every 10 seconds
             setInterval(changeBackground, 10000);
             
-            // En üste kaydırma işlevselliği ekle
+            // En üste kaydırma işlevselliği
             const fab = document.querySelector('.fab');
             fab.addEventListener('click', () => {
                 window.scrollTo({
@@ -2205,10 +2479,103 @@
                     fab.classList.remove('visible');
                 }
             });
-            
-            // Finansal verileri periyodik olarak güncelle
-            setInterval(updateFinancialTicker, 30000); // 30 saniyede bir güncelle
+
+            // Geri/İleri butonları için popstate olayını dinle
+            window.addEventListener('popstate', (event) => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const newsIdFromUrl = urlParams.get('id');
+                const langFromUrl = urlParams.get('lang');
+
+                if (newsIdFromUrl && langFromUrl) {
+                    currentLanguage = langFromUrl;
+                    localStorage.setItem('currentLanguage', langFromUrl); // LocalStorage'ı da güncelle
+                    updateUI(); // Dil ayarlarını güncelle
+                    // Dil seçeneklerini gizle
+                    if (languageOptionsNav) {
+                        languageOptionsNav.style.display = 'none';
+                    }
+                    fetchNewsDetailAndDisplay(newsIdFromUrl);
+                } else {
+                    // Haber ID'si yoksa ana akışı yükle
+                    // Dil seçeneklerini göster
+                    if (languageOptionsNav) {
+                        languageOptionsNav.style.display = 'flex';
+                    }
+                    loadNewsFeed();
+                }
+            });
+
+            // Sayfa yüklendiğinde URL'de haber ID'si olup olmadığını kontrol et
+            const urlParams = new URLSearchParams(window.location.search);
+            const newsIdFromUrl = urlParams.get('id');
+            const langFromUrl = urlParams.get('lang');
+
+            if (newsIdFromUrl && langFromUrl) {
+                currentLanguage = langFromUrl;
+                localStorage.setItem('currentLanguage', langFromUrl); // LocalStorage'ı da güncelle
+                updateUI(); // Dil ayarlarını güncelle
+                // Kimlik doğrulama tamamlandığında fetchNewsDetailAndDisplay çağrılacak
+            } else {
+                // Kimlik doğrulama tamamlandığında loadNewsFeed çağrılacak
+            }
         });
+
+        // Haber detaylarını ana HTML içinde gösteren fonksiyon
+        async function fetchNewsDetailAndDisplay(newsId) {
+            try {
+                const newsDocRef = doc(db, `artifacts/${appId}/public/data/news`, newsId);
+                const newsDocSnap = await getDoc(newsDocRef);
+
+                if (newsDocSnap.exists()) {
+                    const newsItem = newsDocSnap.data();
+                    mainContentDiv.innerHTML = ''; // Ana içeriği temizle
+
+                    const newsDetailContent = createNewsDetailPageContent(newsItem, translations[currentLanguage]);
+                    mainContentDiv.appendChild(newsDetailContent);
+                    // Ensure weather/external data is refreshed on the news detail page
+                    try { fetchExternalData(); } catch (err) { console.warn('fetchExternalData on detail page failed', err); }
+
+
+                    // Medya varsa karuseli başlat
+                    // Sadece bir medya öğesi varsa karuseli başlatma, düğmeleri ve noktaları gizle
+                    if (newsItem.mediaUrls && newsItem.mediaUrls.length > 1) {
+                        initCarousel(newsItem.mediaUrls.length);
+                        // Ensure buttons and dots are visible if there are multiple media items
+                        const carouselPrev = document.getElementById('carousel-prev');
+                        const carouselNext = document.getElementById('carousel-next');
+                        const carouselDots = document.getElementById('carousel-dots');
+                        if (carouselPrev) carouselPrev.style.display = 'flex';
+                        if (carouselNext) carouselNext.style.display = 'flex';
+                        if (carouselDots) carouselDots.style.display = 'flex';
+                    } else {
+                        // Tek medya öğesi veya medya yoksa karusel düğmelerini ve noktalarını gizle
+                        const carouselPrev = document.getElementById('carousel-prev');
+                        const carouselNext = document.getElementById('carousel-next');
+                        const carouselDots = document.getElementById('carousel-dots');
+                        if (carouselPrev) carouselPrev.style.display = 'none';
+                        if (carouselNext) carouselNext.style.display = 'none';
+                        if (carouselDots) carouselDots.style.display = 'none';
+                    }
+
+
+                    // Paylaşım düğmelerine olay dinleyicileri ekle
+                    document.querySelectorAll('.news-share .share-btn').forEach(button => {
+                        button.addEventListener('click', (event) => {
+                            const shareType = event.currentTarget.dataset.shareType;
+                            const newsTitle = newsItem.title;
+                            const newsUrl = window.location.href; // Şu anki sayfanın URL'si
+                            handleShare(shareType, newsTitle, newsUrl);
+                        });
+                    });
+
+                } else {
+                    mainContentDiv.innerHTML = `<div class="text-center text-red-400 text-xl py-12">${translations[currentLanguage].newsNotFound}</div>`;
+                }
+            } catch (error) {
+                console.error("Error fetching news detail for direct display:", error);
+                mainContentDiv.innerHTML = `<div class="text-center text-red-400 text-xl py-12">An error occurred while loading news details.</div>`;
+            }
+        }
     </script>
 </body>
 </html>
